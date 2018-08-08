@@ -1,0 +1,218 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.Master2>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@using Intranet.ModelCollection;
+@{
+    Layout = null;
+}
+<!doctype html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link href="~/Css/Style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+    <link href="~/Css/Calendar.css" rel="stylesheet" />
+    <title>@CurrentPage.pageTitle</title>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top bg-white navbar-light navbar-fixed-top border" style="border:0 0 1px 0 solid grey">
+        <div class="container">
+            <a class="navbar-brand text-black" style="font-weight:bold; padding:0px; margin:0px; margin-right:30px; background-color:#000" href="~/">
+                <img src="~/Image/tr_logo.png" style="height:50px;background-color:transparent" alt="Alternate Text" />
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    @*Home*@
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle topMenu" href="#" id="navbardrop" data-toggle="dropdown">
+                            HOME
+                        </a>
+                        <div class="dropdown-menu bg-light" style="width:460px">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <p class="dropdown-item border-bottom bg-danger text-white" style="width:202px">Home</p>
+                                    <a class="dropdown-item border-bottom" href="~/news-and-events/">News and events</a>
+                                    <a class="dropdown-item border-bottom" href="~/help-desk/">Help desk</a>
+                                </div>
+                                <div class="col-sm-7">
+                                    <p class="dropdown-item border-bottom bg-danger text-white" style="width:254px">Accounting request form</p>
+                                    <a class="dropdown-item border-bottom" href="~/Download_Resources/Acc_Request_Form/CRF.xls">Check request form</a>
+                                    <a class="dropdown-item border-bottom" href="~/Download_Resources/Acc_Request_Form/PCRF.xls">Petty cash request form</a>
+                                    <a class="dropdown-item border-bottom" href="~/Download_Resources/Acc_Request_Form/TRF.xls">Transportation request form</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    @*DEPARTMENTS*@
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle topMenu" href="#" id="navbardrop" data-toggle="dropdown">
+                            DEPARTMENTS
+                        </a>
+                        <div class="dropdown-menu bg-light" style="width:650px">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <p class="dropdown-item border-bottom bg-danger text-white" style="width:163px">Staff dir. by dept</p>
+                                    <a class="dropdown-item border-bottom" href="~/staff-contact-list/">Staff record</a>
+                                    <a class="dropdown-item border-bottom" href="~/under-construction/">HR notification</a>
+                                </div>
+                                <div class="col-sm-4">
+                                    <p class="dropdown-item border-bottom bg-danger text-white" style="width:220px">IT</p>
+                                    <a class="dropdown-item border-bottom" href="~/Download_Resources/DIT/IT Policies.pdf">IT policies</a>
+                                    <a class="dropdown-item border-bottom" href="~/Download_Resources/DIT/Template.pdf">Office template</a>
+                                    <a class="dropdown-item border-bottom" href="~/Download_Resources/DIT/Template.ppt">Office template save</a>
+                                    <a class="dropdown-item border-bottom" href="~/Download_Resources/DIT/FORTE PUBLIC SHARED FOLDER.pdf">Public folder map</a>
+                                    <a class="dropdown-item border-bottom" href="~/under-construction/">Staff equipement sys.</a>
+                                </div>
+                                <div class="col-sm-5">
+                                    <p class="dropdown-item border-bottom bg-danger text-white" style="width:253px">HR</p>
+                                    <a class="dropdown-item border-bottom" href="~/Download_Resources/DHR/Employee Hand Book-1st Version.pdf">Employee hand book</a>
+                                    <a class="dropdown-item border-bottom" href="~/error-page/">Training schedule</a>
+                                    <a class="dropdown-item border-bottom" href="~/Download_Resources/DHR/CII.pdf">CII MII schedule</a>
+                                    <a class="dropdown-item border-bottom" href="~/Download_Resources/DHR/A guide for examination preparation course.pdf">Exam guidelines</a>
+                                    <a class="dropdown-item border-bottom" href="~/error-page/">Suggestion book</a>
+                                    <a class="dropdown-item border-bottom" href="~/error-page/">Staff orientation</a>
+                                    <a class="dropdown-item border-bottom" href="~/error-page/">Recruitment requirement</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+
+
+                    @*Applications*@
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle topMenu" href="#" id="navbardrop" data-toggle="dropdown">
+                            APPLICATIONS
+                        </a>
+                        <div class="dropdown-menu" style="width:400px" s>
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <a class="dropdown-item border-bottom" href="#">Car booking</a>
+                                    <a class="dropdown-item border-bottom" href="#">Leave plan application</a>
+                                    <a class="dropdown-item border-bottom" href="#">Stationery</a>
+                                    <a class="dropdown-item border-bottom" href="#">Mail out</a>
+                                    <a class="dropdown-item border-bottom" href="#">Photocopy Application</a>
+                                    <a class="dropdown-item border-bottom" href="#">LDL application</a>
+                                    <a class="dropdown-item border-bottom" href="#">Reimbursement</a>
+                                </div>
+                                <div class="col-sm-1 border-right"></div>
+                                <div class="col-sm-6">
+                                    <a class="dropdown-item border-bottom" href="#">Risk Survey</a>
+                                    <a class="dropdown-item border-bottom" href="#">AM best</a>
+                                    <a class="dropdown-item border-bottom" href="#">Name card</a>
+                                    <a class="dropdown-item border-bottom" href="#">Room booking</a>
+                                    <a class="dropdown-item border-bottom" href="#">File management</a>
+                                    <a class="dropdown-item border-bottom" href="#">Print card</a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </li>
+
+                    @*Archive*@
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle topMenu" href="#" id="navbardrop" data-toggle="dropdown">
+                            ARCHIVE
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item border-bottom" href="~/archive-law/">Laws</a>
+                            <a class="dropdown-item border-bottom" href="~/archive-economic/">Economics</a>
+                            <a class="dropdown-item border-bottom" href="~/archive-statistic/">Statistics</a>
+                            <a class="dropdown-item border-bottom" href="~/archive-leaflet/">Leaflets</a>
+                            <a class="dropdown-item border-bottom" href="~/archive-claim-form-and-procedure/">Claim form and procedure</a>
+                            <a class="dropdown-item border-bottom" href="~/under-construction/">Model insurance letter</a>
+                        </div>
+                    </li>
+
+                    @*XMS*@
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle topMenu" href="#" id="navbardrop" data-toggle="dropdown">
+                            XMS
+                        </a>
+                        <div class="dropdown-menu" style="width:500px">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <a class="dropdown-item border-bottom" href="#">IMS</a>
+                                    <a class="dropdown-item border-bottom" href="#">BPS</a>
+                                    <a class="dropdown-item border-bottom" href="#">Fige tree blue</a>
+                                    <a class="dropdown-item border-bottom" href="#">RMS</a>
+                                    <a class="dropdown-item border-bottom" href="#">IMS</a>
+                                    <a class="dropdown-item border-bottom" href="#">Auto premium calculator</a>
+                                    <a class="dropdown-item border-bottom" href="#">Cliam payment note</a>
+                                </div>
+                                <div class="col-sm-1 border-right"></div>
+                                <div class="col-sm-6">
+                                    <a class="dropdown-item border-bottom" href="#">Cliam payment note</a>
+                                    <a class="dropdown-item border-bottom" href="#">Accounting report</a>
+                                    <a class="dropdown-item border-bottom" href="#">Cliam notification process</a>
+                                    <a class="dropdown-item border-bottom" href="#">Cover note printing</a>
+                                    <a class="dropdown-item border-bottom" href="#">PLP</a>
+                                    <a class="dropdown-item border-bottom" href="#">PA</a>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </li>
+
+                    @*ABOUT US*@
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle topMenu" href="#" id="navbardrop" data-toggle="dropdown">
+                            ABOUT US
+                        </a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item border-bottom" href="~/Download_Resources/ABOUT/CorpPro_2008.pdf">Corperate profile</a>
+                            <a class="dropdown-item border-bottom" href="~/Download_Resources/ABOUT/OrganizationChart.mht">Org. chart</a>
+                            <a class="dropdown-item border-bottom" href="~/under-construction/">Brand guideline</a>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <form action="#" method="post">
+                            <input class="nav-link"
+                                   style="border:1px solid #d41945; border-radius:25px; width:300px; padding-left:20px; margin-left:10px"
+                                   type="search" name="search" placeholder="type to search..." />
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <div style="margin-top:55px">
+         <div class="container">
+            <div class="row">
+                <div class="col-sm-3 bg-danger">
+                    <h6>Block 1</h6>
+                </div>
+                <div class="col-sm-5 bg-warning">
+                    <h6>Block 2</h6>
+                </div>
+                <div class="col-sm-4 bg-info">
+                    <h6>Problem's detail information here!</h6>
+                </div>
+            </div>
+            @RenderBody()
+        </div>
+    </div>
+    <hr />s
+    <footer>
+        <div class="footer-copyright text-center text-black-50 py-3">
+            <div class="text-center">
+                <p>Forte Insurance Cambodia Plc </p>
+                <p>Copyright © <a class="dark-grey-text" href="https://www.forteinsurance.com/">Forte Insurance</a>  @DateTime.Now.Year<span>.</span> All right reserved</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

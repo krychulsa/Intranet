@@ -1,0 +1,198 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.UpdateStaffInfo>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@using Intranet.ModelCollection;
+@{
+	Layout = "Master1.cshtml";
+}
+
+@{
+    var myDb = new PetaPoco.Database("FIHRDBPath");
+    if (IsPost)
+    {
+        if (Request.Form["submitUpdate"] == "submitUpdate")
+        {
+            var updateInfo = myDb.SingleOrDefault<fi_employee>("SELECT * FROM Employees WHERE ID=@0", Request.Form["userId"]);
+            updateInfo.ID = Request.Form["postId"];
+            updateInfo.DeptID= Request.Form["postDepartment"];
+            updateInfo.Range= Request.Form["postRange"];
+            updateInfo.Title = Request.Form["postTitle"];
+
+            updateInfo.FirstName = Request.Form["postFirstName"];
+            updateInfo.LastName = Request.Form["postLastName"];
+            updateInfo.FirstNameKH = Request.Form["postFirstNameKH"];
+            updateInfo.LastNameKH = Request.Form["postLastNameKH"];
+
+            updateInfo.Gender = Request.Form["postGender"];
+            updateInfo.Position = Request.Form["postPosition"];
+            updateInfo.Address = Request.Form["postAddress"];
+            updateInfo.NCardID = Request.Form["postNCardID"];
+
+            updateInfo.PassportNo = Request.Form["postPassportNo"];
+            updateInfo.Mobile = Request.Form["postMobile"];
+            updateInfo.Extension = Request.Form["postExtension"];
+            updateInfo.EmailInternal = Request.Form["postEmailInternal"];
+
+            updateInfo.EmailExternal = Request.Form["postEmailExternal"];
+            updateInfo.PhotoPath = Request.Form["postPhotoPath"];
+            updateInfo.Status = Request.Form["postStatus"];
+            updateInfo.nv_Desc = Request.Form["postnv_Desc"];
+
+            updateInfo.lastupdate = Request.Form["postlastupdate"];
+            updateInfo.group_name = Request.Form["postgroup_name"];
+            
+            myDb.Update("Employees", "ID", updateInfo);
+            Response.Redirect("~/");
+        }
+    }
+}
+
+<div class="container">
+    <div class="container-fluid">
+        <form action="#" method="post">
+            <div style="margin-top:20px"></div>
+
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>ID</label>
+                <div class="col-sm-10">
+                    <input type="text" readonly class="form-control" id="inputUser" name="postId" value="@Request.Form["postId"]">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>Department</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputUser" name="postDepartment" value="@Request.Form["postDepartment"]" />
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>Range</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="inputInputEmail" name="postRange" value="@Request.Form["postRange"]">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>Title</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="inputPassword" name="postTitle" value="@Request.Form["postTitle"]">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>FirstName</label>
+                <div class="col-sm-10">
+                    <input type="text" rows="10" class="form-control" id="inputDescription" name="postFirstName" value="@Request.Form["postFirstName"]">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>LastName</label>
+                <div class="col-sm-10">
+                    <input type="text" rows="10" class="form-control" id="inputDescription" name="postLastName" value="@Request.Form["postLastName"]">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>FirstNameKH</label>
+                <div class="col-sm-10">
+                    <input type="text" rows="10" class="form-control" id="inputDescription" name="postFirstNameKH" value="@Request.Form["postFirstNameKH"]">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>LastNameKH</label>
+                <div class="col-sm-10">
+                    <input type="text" rows="10" class="form-control" id="inputDescription" name="postLastNameKH" value="@Request.Form["postLastNameKH"]">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>Gender</label>
+                <div class="col-sm-10">
+                    <input type="text" rows="10" class="form-control" id="inputDescription" name="postGender" value="@Request.Form["postGender"]">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>Position</label>
+                <div class="col-sm-10">
+                    <input type="text" rows="10" class="form-control" id="inputDescription" name="postPosition" value="@Request.Form["postPosition"]">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>Address</label>
+                <div class="col-sm-10">
+                    <input type="text" rows="10" class="form-control" id="inputDescription" name="postAddress"value="@Request.Form["postAddress"]">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>NCardID</label>
+                <div class="col-sm-10">
+                    <input type="text" rows="10" class="form-control" id="inputDescription" name="postNCardID" value="@Request.Form["postNCardID"]">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>PassportNo</label>
+                <div class="col-sm-10">
+                    <input type="text" rows="10" class="form-control" id="inputDescription" name="postPassportNo"value="@Request.Form["postPassportNo"]">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>Mobile</label>
+                <div class="col-sm-10">
+                    <input type="text" rows="10" class="form-control" id="inputDescription" name="postMobile"value="@Request.Form["postMobile"]">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>Extension</label>
+                <div class="col-sm-10">
+                    <input type="text" rows="10" class="form-control" id="inputDescription" name="postExtension"value="@Request.Form["postExtension"]">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>EmailInternal</label>
+                <div class="col-sm-10">
+                    <input type="text" rows="10" class="form-control" id="inputDescription" name="postEmailInternal"value="@Request.Form["postEmailInternal"]">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>EmailExternal</label>
+                <div class="col-sm-10">
+                    <input type="text" rows="10" class="form-control" id="inputDescription" name="postEmailExternal"value="@Request.Form["postEmailExternal"]">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>PhotoPath</label>
+                <div class="col-sm-10">
+                    <input type="text" rows="10" class="form-control" id="inputDescription" name="postPhotoPath"value="@Request.Form["postPhotoPath"]">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>Status</label>
+                <div class="col-sm-10">
+                    <input type="text" rows="10" class="form-control" id="inputDescription" name="postStatus"value="@Request.Form["postStatus"]">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>nv_Desc</label>
+                <div class="col-sm-10">
+                    <input type="text" rows="10" class="form-control" id="inputDescription" name="postnv_Desc"value="@Request.Form["postnv_Desc"]">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>lastupdate</label>
+                <div class="col-sm-10">
+                    <input type="text" rows="10" class="form-control" id="inputDescription" name="postlastupdate"value="@Request.Form["postlastupdate"]">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="inputPassword" class="col-sm-2 col-form-label" st>Group name</label>
+                <div class="col-sm-10">
+                    <input type="text" rows="10" class="form-control" id="inputDescription" name="postgroup_name"value="@Request.Form["postgroup_name"]">
+                </div>
+            </div>
+            <div style="margin-left:45%; margin-bottom:15px">
+                <button style="border-radius:30px" type="submit" name="submitUpdate" value="submitUpdate" class="btn btn-outline-danger">Update Information</button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,128 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.NewsAndEvents>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@using Intranet.ModelCollection;
+@{
+	Layout = "Master1.cshtml";
+}
+
+@{
+    int currentPage = 0;
+    var myDb = new PetaPoco.Database("FIHRDBPath");
+    string queryDb = "SELECT int_LID as newsId, nvc_Title as newsTitle, nvc_Spoke as newsSpoke, nvc_News as newsDescription FROM tbl_News ORDER BY int_LID DESC";
+    if (IsPost)
+    {
+        if (Request.Form["submitSearch"] == "submitSearch")
+        {
+            currentPage += 1;
+            queryDb = String.Format("SELECT int_LID as newsId, nvc_Title as newsTitle, nvc_Spoke as newsSpoke, nvc_News as newsDescription FROM tbl_News WHERE nvc_Title LIKE '%{0}%'", Request.Form["searchEmployee"]);
+            //queryDb = String.Format("SELECT int_LID as newsId, nvc_Title as newsTitle, nvc_Spoke as newsSpoke, nvc_News as newsDescription FROM tbl_News WHERE nvc_Title LIKE '%{0}%' OR nvc_News LIKE '%{0}%'", Request.Form["searchEmployee"]);
+        }
+        else
+        {
+            currentPage = Convert.ToInt32(Request.Form["btnPage"]);
+        }
+    }
+    else
+    {
+        currentPage += 1;
+    }
+    PetaPoco.Page<fi_news_events> listNews;
+    listNews = myDb.Page<fi_news_events>(currentPage, 45, queryDb);
+    int renameId = 0;
+    int i = 0;
+}
+<div class="container">
+    <div class="text-center">
+        <form action="#" method="post">
+            <div class="row">
+                <div class="col-sm-9">
+                    <input type="search" class="form-control" style="border-radius:25px" name="searchEmployee" placeholder="Type employees name..." />
+                </div>
+                <div class="col-sm-3 border-left border-gray">
+                    <button style="border-radius:25px; width:140px" type="submit" value="submitSearch" name="submitSearch" class="btn btn-outline-dark">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <hr />
+
+    <div class="accordion" id="accordionExample">
+        @foreach (var newsItem in listNews.Items)
+        {
+            renameId += 1;
+            <div class="card bg-white">
+                <div class="card-header" style="margin:0px; padding:15px 0px 5px 15px;" id="@String.Format("newHeading{0}", @renameId)">
+                    <h5 class="mb-0">
+                        <p class="text-black" style="font-size:15px; font-weight:500" data-toggle="collapse" data-target="@String.Format("#collapseNews{0}", @renameId)" aria-expanded="true" aria-controls="@String.Format("#collapseNews{0}", @renameId)">
+                            @newsItem.newsTitle.ToFirstUpper()
+                        </p>
+                        <p class="text-black-50" style="font-size:12px; font-weight:400">@newsItem.newsSpoke</p>
+                    </h5>
+                </div>
+
+                <div id="@String.Format("collapseNews{0}", @renameId)" class="collapse" aria-labelledby="@String.Format("newHeading{0}", @renameId)" data-parent="#accordionExample">
+                    <div class="card-body" style="background-color:#e8e8e8">
+                        <p class="font-weight-bold text-center" style="font-size:17px">@newsItem.newsTitle</p>
+                        <p class="font-italic">@newsItem.newsSpoke</p>
+                        <p>@newsItem.newsDescription</p>
+                    </div>
+                </div>
+
+                @*@if(renameId ==1){
+                        <div id="@String.Format("collapseNews{0}", @renameId)" class="collapse show" aria-labelledby="@String.Format("newHeading{0}", @renameId)" data-parent="#accordionExample">
+                            <div class="card-body">
+                                @newsItem.newsDescription
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        <div id="@String.Format("collapseNews{0}", @renameId)" class="collapse" aria-labelledby="@String.Format("newHeading{0}", @renameId)" data-parent="#accordionExample">
+                            <div class="card-body">
+                                @newsItem.newsDescription
+                            </div>
+                        </div>
+                    }*@
+
+            </div>
+        }
+    </div>
+    <hr />
+    <div class="text-center">
+        <form action="~/news-and-events/" method="post">
+            <div class="btn-group">
+                @for (i = 1; i <= listNews.TotalPages; i++)
+            {
+                    @*Display Previous btn*@
+                if (listNews.CurrentPage != 1)
+                {
+                    if (i == 1)
+                    {
+                        var j = listNews.CurrentPage - 1;
+                        <button type="submit" name="btnPage" value="@j" class="btn btn-outline-dark"><< Previous</button>
+                    }
+                }
+
+                @*Diplay More Btn*@
+                if (i == listNews.CurrentPage)
+                {
+                    <button type="submit" name="btnPage" value="@i" class="btn btn-outline-dark text-danger btn-danger disabled">@i</button>
+                }
+                else
+                {
+                    <button type="submit" name="btnPage" value="@i" class="btn btn-outline-dark">@i</button>
+                }
+                @*Display Next Btn*@
+                if (listNews.CurrentPage != listNews.TotalPages)
+                {
+                    if (i == listNews.TotalPages)
+                    {
+                        var j = listNews.CurrentPage + 1;
+                        <button type="submit" name="btnPage" value="@j" class="btn btn-outline-dark">Next >></button>
+                        }
+                    }
+                }
+            </div>
+        </form>
+    </div>
+</div>

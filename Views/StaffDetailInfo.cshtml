@@ -1,0 +1,38 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.StaffDetailInfo>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@{
+	Layout = "Master1.cshtml";
+}
+<div class="card">
+    <div class="text-center">
+        <h5 class="card-title" style="padding-top:4px; margin-bottom:0">@Request.Form["postfName"] @Request.Form["postlName"]</h5>
+    </div>
+    <hr />
+    <div class="card-body">
+        <div class="row">
+            <div class="left col">
+                
+                @if (!(@Request.Form["postPhotoPath"].IsNullOrWhiteSpace()))
+                {
+                    <img src="@string.Format("/Image/Employees/{0}", @Request.Form["postPhotoPath"])" style="width:280px" class="rounded mx-auto d-block" alt="Staff Profile Picture">
+                }
+                else
+                {
+                    <img src="~/Image/Employees/default_emp.png" style="width:280px" class="rounded mx-auto d-block" alt="Staff Profile Picture">
+                }
+            </div>
+            <div class="right col" style="width:50%">
+                <p class="card-text">Department : @Request.Form["postDept"]</p>
+                <p class="card-text">Position : @Request.Form["postPosition"]</p>
+                <p class="card-text">Gender : @Request.Form["postGender"]</p>
+                <p class="card-text">Email : @Request.Form["postEmail"]</p>
+                <p class="card-text">Phone : @Request.Form["postMobile"]</p>
+                <p class="card-text">Extension : @Request.Form["postExtension"]</p>
+                <hr/>
+                <div class="col">
+                    <a href="~/staff-contact-list" class="btn right border border-danger" style="color:crimson; margin-top:15px; border-radius:25px">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.Calendar>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@using Intranet.ModelCollection;
+@{
+    Layout = "Master1.cshtml";
+}
+@{
+    var myDb = new PetaPoco.Database("FIHRDBPath");
+    var result = myDb.Query<ForteHolidays>("SELECT * from VW_CH_HOLIDAY_THIS_MONTH");
+    var json = Html.Raw(Json.Encode(result));
+}
+
+    <div id='calendar'></div>
+<div class="container" style="margin-top:20px">
+    <ul class="list-group">
+       @foreach (var getHoliday in result)
+       {
+            <li class="list-group-item text-danger">@getHoliday.start.Substring(0, getHoliday.start.IndexOf(" "))  @getHoliday.title</li>
+       }
+    </ul>
+</div>

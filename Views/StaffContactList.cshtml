@@ -1,0 +1,177 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.StaffContactList>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@using Intranet.ModelCollection;
+@{
+    Layout = "Master.cshtml";
+}
+@{
+    int currentPage = 0;
+    var myDb = new PetaPoco.Database("FIHRDBPath");
+    string queryDb = "SELECT * FROM Employees ORDER BY ID DESC";
+    if (IsPost)
+    {
+        if (Request.Form["submitSearch"] == "submitSearch")
+        {
+            var fname = Request.Form["searchEmployee"];
+            var deptId = Request.Form["deptSel"];
+            if (deptId== "default")
+            {
+                queryDb = string.Format("SELECT * FROM Employees WHERE (FirstName + ' ' + LastName) LIKE '%{0}%' OR (LastName + ' ' + FirstName) LIKE '%{0}%'", fname);
+            }
+            else
+            {
+                queryDb = string.Format("SELECT * FROM Employees WHERE (FirstName + ' ' + LastName) LIKE '%{0}%' AND  DeptId LIKE '%{1}%'", fname, deptId);
+            }
+            currentPage += 1;
+        }
+        else
+        {
+            currentPage = Convert.ToInt32(Request.Form["btnPage"]);
+        }
+    }
+    else
+    {
+        currentPage += 1;
+    }
+    PetaPoco.Page<fi_employee> listEmployees;
+    listEmployees = myDb.Page<fi_employee>(currentPage, 20, queryDb);
+    var listDepartment = myDb.Query<fi_department>("SELECT * FROM Departments");
+    int i = 0;
+
+    }
+    <hr />
+    <div class="text-center">
+    <form action="#" method="post">
+        <div class="row">
+            <div class="col-sm-6">
+                <input type="search" class="form-control" style="border-radius:25px" name="searchEmployee" placeholder="Type employees name..." />
+            </div>
+            <div class="col-sm-4 border-left border-gray">
+                <select name="deptSel" class="custom-select" style="border-radius:25px">
+                    <option value="default" selected>Choose departments</option>
+                    @foreach (var dData in listDepartment)
+    {
+                        <option value="@dData.ID">@dData.DeptName</option>
+                    }
+                </select>
+            </div>
+            <div class="col-sm-2 border-left border-gray">
+                <button style="border-radius:25px;" type="submit" value="submitSearch" name="submitSearch" class="btn btn-outline-dark">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
+    <hr />
+
+    <table class="table table-sm">
+        <thead class="thead-light" style="font-weight:300">
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Name</th>
+                <th scope="col">Dept</th>
+                <th scope="col">Ext</th>
+                <th scope="col">Position</th>
+                <th scope="col">Mobile</th>
+                <th scope="col">Email</th>
+                <th scope="col">DOB</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in listEmployees.Items)
+    {
+                <tr>
+                    <td>@row.ID</td>
+                    <td>@row.FirstName @row.LastName</td>
+                    <td>@row.DeptID</td>
+                    <td>@row.Extension</td>
+                    <td>@row.Position</td>
+                    <td>@row.Mobile</td>
+                    <td>@row.EmailInternal</td>
+                    <td>@row.DOB.Substring(0, @row.DOB.IndexOf(" "))</td>
+                    <td>
+                        <div class="btn-group" role="group">
+                            @*View Popup Model*@
+                            <form action="~/staff-detail-info/" method="post">
+                                <input type="type" hidden name="postId" value="@row.ID" />
+                                <input type="type" hidden name="postfName" value="@row.FirstName" />
+                                <input type="type" hidden name="postlName" value="@row.LastName" />
+                                <input type="type" hidden name="postDept" value="@row.DeptID" />
+                                <input type="type" hidden name="postExtension" value="@row.Extension" />
+                                <input type="type" hidden name="postPosition" value="@row.Position" />
+                                <input type="type" hidden name="postGender" value="@row.Gender" />
+                                <input type="type" hidden name="postMobile" value="@row.Mobile" />
+                                <input type="type" hidden name="postEmail" value="@row.EmailInternal" />
+                                <input type="type" hidden name="postPhotoPath" value="@row.PhotoPath" />
+                                <button type="submit" style="margin-right:5px; border-radius:20px; padding:2px 10px 2px 10px; margin-top:5px" name="btnUpdate" value="Update" class="btn btn-outline-dark"> View </button>
+                            </form>
+                            @*Update Popup model*@
+                            <form action="~/update-staff-info" method="post">
+                                <input type="type" hidden name="postId" value="@row.ID" />
+                                <input type="type" hidden name="postDeptID" value="@row.DeptID" />
+                                <input type="type" hidden name="postRange" value="@row.Range" />
+                                <input type="type" hidden name="postTitle" value="@row.Title" />
+                                <input type="type" hidden name="postFirstName" value="@row.FirstName" />
+                                <input type="type" hidden name="postLastName" value="@row.LastName" />
+                                <input type="type" hidden name="postFirstNameKH" value="@row.FirstNameKH" />
+                                <input type="type" hidden name="postLastNameKH" value="@row.LastNameKH" />
+                                <input type="type" hidden name="postGender" value="@row.Gender" />
+                                <input type="type" hidden name="postPosition" value="@row.Position" />
+                                <input type="type" hidden name="postAddress" value="@row.Address" />
+                                <input type="type" hidden name="postNCardID" value="@row.NCardID" />
+                                <input type="type" hidden name="postPassportNo" value="@row.PassportNo" />
+                                <input type="type" hidden name="postMobile" value="@row.Mobile" />
+                                <input type="type" hidden name="postExtension" value="@row.Extension" />
+                                <input type="type" hidden name="postEmailInternal" value="@row.EmailInternal" />
+                                <input type="type" hidden name="postEmailExternal" value="@row.EmailExternal" />
+                                <input type="type" hidden name="postPhotoPath" value="@row.PhotoPath" />
+                                <input type="type" hidden name="postStatus" value="@row.Status" />
+                                <input type="type" hidden name="postnv_Desc" value="@row.nv_Desc" />
+                                <input type="type" hidden name="postlastupdate" value="@row.lastupdate" />
+                                <input type="type" hidden name="postgroup_name" value="@row.group_name" />
+                                <button type="submit" style="margin-right:5px; border-radius:20px; padding:2px 10px 2px 10px; margin-top:5px" name="btnUpdate" value="Update" class="btn btn-outline-dark">Update</button>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <hr />
+    <div class="text-center">
+        <form action="~/staff-contact-list/" method="post">
+            <div class="btn-group">
+                @for (i = 1; i <= listEmployees.TotalPages; i++)
+            {
+                    @*Display Previous btn*@
+                if (listEmployees.CurrentPage != 1)
+                {
+                    if (i == 1)
+                    {
+                        var j = listEmployees.CurrentPage - 1;
+                        <button type="submit" name="btnPage" value="@j" class="btn btn-outline-dark"><< Previous</button>
+                    }
+                }
+
+                @*Diplay More Btn*@
+                if (i == listEmployees.CurrentPage)
+                {
+                    <button type="submit" name="btnPage" value="@i" class="btn btn-outline-dark text-danger btn-danger disabled">@i</button>
+                }
+                else
+                {
+                    <button type="submit" name="btnPage" value="@i" class="btn btn-outline-dark">@i</button>
+                }
+                @*Display Next Btn*@
+                if (listEmployees.CurrentPage != listEmployees.TotalPages)
+                {
+                    if (i == listEmployees.TotalPages)
+                    {
+                        var j = listEmployees.CurrentPage + 1;
+                        <button type="submit" name="btnPage" value="@j" class="btn btn-outline-dark">Next >></button>
+                        }
+                    }
+                }
+            </div>
+        </form>
+    </div>

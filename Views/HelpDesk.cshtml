@@ -1,0 +1,53 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.HelpDesk>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@{
+	Layout = "Master1.cshtml";
+}
+
+ 
+<div class="card">
+    <div class="card-header">
+        How to set signature in E-mail?
+    </div>
+    <div class="card-body">
+        <p>To set signature in E-mail: </p>
+        <ol>
+            <li>Go to Tool -> Option</li>
+            <li>
+                <p>Mail Format Tap -> Select Signatures</p>
+                <img src="~/Image/Help Desk/2A.JPG" />
+            </li>
+            
+            <li>
+                <p>Select "Tracking Option"</p>
+                <img src="~/Image/Help Desk/2B.JPG" />
+            </li>
+            <li>OK</li>
+        </ol>
+    </div>
+</div>
+
+<hr />
+<div class="card">
+    <div class="card-header">
+        How to trace every e-mail whether they received or not after we send out?
+    </div>
+    <div class="card-body">
+        <p>You can trace the e-mail by follow the following steps: </p>
+        <ol>
+            <li>Go to Tool -> Option </li>
+            <li>
+                <p>MSelect E-mail Option</p>
+                <img src="~/Image/Help Desk/3A.JPG" />
+            </li>
+
+            <li>
+                <p>Select New </p>
+                <img src="~/Image/Help Desk/3B.JPG" />
+            </li>
+            <li>Check Read receipt -- if read receipt</li>
+            <li>Check Delivery receipt -– if delivery receipt</li>
+            <li>OK</li>
+        </ol>
+    </div>
+</div>
