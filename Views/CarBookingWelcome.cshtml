@@ -1,0 +1,30 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.CarBookingWelcome>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@{
+    Layout = "CarBooking.cshtml";
+}
+
+<div class="container">
+    <div class="container-fluid" style="text-align:center; background-color :rgb(212,25,69); height:410px;">
+        <h2 style="color:#ffd600; padding-top:15%; font-weight:bold; font-size:50px">CAR BOOKING</h2>
+        <hr />
+        <p id="UserLogin"></p>
+        <p class="font-weight-bold" style="color:#ffd600">CAR BOOKING OPERATION SYSTEM FOR </p>
+        <hr style="width:30%" />
+        <p class="text-white font-weight-bold"> Forte Insurance Plc</p>
+    </div>
+</div>
+
+<div id="result"></div>
+
+<script>
+// Check browser support
+if (typeof(Storage) !== "undefined") {
+    // Store
+    sessionStorage.setItem("lastname", "Smith");
+    // Retrieve
+    document.getElementById("UserLogin").innerHTML = sessionStorage.getItem("SessionUsername");
+} else {
+    document.getElementById("UserLogin").innerHTML = "Sorry, your browser does not support Web Storage...";
+}
+</script>

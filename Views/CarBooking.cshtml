@@ -1,0 +1,73 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.CarBooking>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@{
+    Layout = "Master2.cshtml";
+}
+<div style="margin-top:15px"> 
+    <div style="margin-bottom:10px">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="list-group">
+                    <!--Car booking entry-->
+                    <a href="~/car-booking-entry/" class="list-group-item disabled" style="padding:0px;margin:0px;">
+                        <div class="card-header" style="padding:2px 0px 5px 10px" id="headingTen">
+                            <h5 class="mb-0">
+                                <button class="btn btn-sm btn-link text-secondary" style="text-decoration:none; width:100%" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                    <div class="row">
+                                        <div class="col-sm-4">CAR BOOKING ENTRY</div>
+                                        <div class="col-sm-8" style="text-align:right"><img style="max-width:15px; padding-top:5px" src="https://png.icons8.com/material/50/000000/more-than.png"></div>
+                                    </div>
+                                </button>
+                            </h5>
+                        </div>
+                    </a>
+                    <!--Car booking Update-->
+                    <a href="~/car-booking-update/" class="list-group-item disabled" style="padding:0px;margin:0px;">
+                        <div class="card-header" style="padding:2px 0px 5px 10px" id="headingTen">
+                            <h5 class="mb-0">
+                                <button class="btn btn-sm btn-link text-secondary" style="text-decoration:none; width:100%" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                    <div class="row">
+                                        <div class="col-sm-4">CAR BOOKING UPDATE</div>
+                                        <div class="col-sm-8" style="text-align:right"><img style="max-width:15px; padding-top:5px" src="https://png.icons8.com/material/50/000000/more-than.png"></div>
+                                    </div>
+                                </button>
+                            </h5>
+                        </div>
+                    </a>
+
+                    <!--Car booking Monthly List-->
+                    <a href="~/car-booking-monthly-list/" class="list-group-item disabled" style="padding:0px;margin:0px;">
+                        <div class="card-header" style="padding:2px 0px 5px 10px" id="headingTen">
+                            <h5 class="mb-0">
+                                <button class="btn btn-sm btn-link text-secondary" style="text-decoration:none; width:100%" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                    <div class="row">
+                                        <div class="col-sm-4">CAR BOOKING MONTHLY LIST</div>
+                                        <div class="col-sm-8" style="text-align:right"><img style="max-width:15px; padding-top:5px" src="https://png.icons8.com/material/50/000000/more-than.png"></div>
+                                    </div>
+                                </button>
+                            </h5>
+                        </div>
+                    </a>
+
+                    <!--Car booking On Active-->
+                    <a href="~/car-booking-on-active/" class="list-group-item disabled" style="padding:0px;margin:0px;">
+                        <div class="card-header" style="padding:2px 0px 5px 10px" id="headingTen">
+                            <h5 class="mb-0">
+                                <button class="btn btn-sm btn-link text-secondary" style="text-decoration:none; width:100%" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                    <div class="row">
+                                        <div class="col-sm-4">CAR BOOKING ON ACTIVE</div>
+                                        <div class="col-sm-8" style="text-align:right"><img style="max-width:15px; padding-top:5px" src="https://png.icons8.com/material/50/000000/more-than.png"></div>
+                                    </div>
+                                </button>
+                            </h5>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-9" style="background-color:lavenderblush;">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</div>
+<hr />

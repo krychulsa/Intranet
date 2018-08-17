@@ -8,7 +8,7 @@ using  Umbraco.Web;
 using  Umbraco.ModelsBuilder;
 using  Umbraco.ModelsBuilder.Umbraco;
 [assembly: PureLiveAssembly]
-[assembly:ModelsBuilderAssembly(PureLive = true, SourceHash = "ec7b1d76925594aa")]
+[assembly:ModelsBuilderAssembly(PureLive = true, SourceHash = "8150112e4b27de3f")]
 [assembly:System.Reflection.AssemblyVersion("0.0.0.1")]
 
 
@@ -635,6 +635,422 @@ namespace Umbraco.Web.PublishedContentModels
 #pragma warning restore 0109
 
 		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<ProblemDiscussion, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+	}
+
+	/// <summary>Car Booking</summary>
+	[PublishedContentModel("carBooking")]
+	public partial class CarBooking : Master2
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "carBooking";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public CarBooking(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<CarBooking, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+	}
+
+	/// <summary>Car booking entry</summary>
+	[PublishedContentModel("carBookingEntry")]
+	public partial class CarBookingEntry : CarBooking
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "carBookingEntry";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public CarBookingEntry(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<CarBookingEntry, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+	}
+
+	/// <summary>Car Booking Login</summary>
+	[PublishedContentModel("carBookingLogin")]
+	public partial class CarBookingLogin : Master2
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "carBookingLogin";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public CarBookingLogin(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<CarBookingLogin, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+	}
+
+	/// <summary>Car Booking Update</summary>
+	[PublishedContentModel("carBookingUpdate")]
+	public partial class CarBookingUpdate : CarBooking
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "carBookingUpdate";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public CarBookingUpdate(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<CarBookingUpdate, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+	}
+
+	/// <summary>Car Booking Monthly List</summary>
+	[PublishedContentModel("carBookingMonthlyList")]
+	public partial class CarBookingMonthlyList : CarBooking
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "carBookingMonthlyList";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public CarBookingMonthlyList(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<CarBookingMonthlyList, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+	}
+
+	/// <summary>Car Booking On Active</summary>
+	[PublishedContentModel("carBookingOnActive")]
+	public partial class CarBookingOnActive : CarBooking
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "carBookingOnActive";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public CarBookingOnActive(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<CarBookingOnActive, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+	}
+
+	/// <summary>Car Booking Welcome</summary>
+	[PublishedContentModel("carBookingWelcome")]
+	public partial class CarBookingWelcome : CarBooking
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "carBookingWelcome";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public CarBookingWelcome(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<CarBookingWelcome, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+	}
+
+	/// <summary>Car Booking Update Detail</summary>
+	[PublishedContentModel("carBookingUpdateDetail")]
+	public partial class CarBookingUpdateDetail : CarBooking
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "carBookingUpdateDetail";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public CarBookingUpdateDetail(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<CarBookingUpdateDetail, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+	}
+
+	/// <summary>Leave Plan Application</summary>
+	[PublishedContentModel("leavePlanApplication")]
+	public partial class LeavePlanApplication : Master2
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "leavePlanApplication";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public LeavePlanApplication(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<LeavePlanApplication, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+	}
+
+	/// <summary>Leave Plan Login</summary>
+	[PublishedContentModel("leavePlanLogin")]
+	public partial class LeavePlanLogin : Master2
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "leavePlanLogin";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public LeavePlanLogin(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<LeavePlanLogin, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+	}
+
+	/// <summary>Leave Plan Public Holiday List</summary>
+	[PublishedContentModel("leavePlanPublicHolidayList")]
+	public partial class LeavePlanPublicHolidayList : LeavePlanApplication
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "leavePlanPublicHolidayList";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public LeavePlanPublicHolidayList(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<LeavePlanPublicHolidayList, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+	}
+
+	/// <summary>Leave Plan Application Welcome</summary>
+	[PublishedContentModel("leavePlanApplicationWelcome")]
+	public partial class LeavePlanApplicationWelcome : LeavePlanApplication
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "leavePlanApplicationWelcome";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public LeavePlanApplicationWelcome(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<LeavePlanApplicationWelcome, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+	}
+
+	/// <summary>Leave Plan Listing</summary>
+	[PublishedContentModel("leavePlanListing")]
+	public partial class LeavePlanListing : LeavePlanApplication
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "leavePlanListing";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public LeavePlanListing(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<LeavePlanListing, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+	}
+
+	/// <summary>Leave Plan Staff Plan By Date List</summary>
+	[PublishedContentModel("leavePlanStaffPlanByDateList")]
+	public partial class LeavePlanStaffPlanByDateList : LeavePlanApplication
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "leavePlanStaffPlanByDateList";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public LeavePlanStaffPlanByDateList(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<LeavePlanStaffPlanByDateList, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+	}
+
+	/// <summary>Leave Plan On Leave Today</summary>
+	[PublishedContentModel("leavePlanOnLeaveToday")]
+	public partial class LeavePlanOnLeaveToday : LeavePlanApplication
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "leavePlanOnLeaveToday";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public LeavePlanOnLeaveToday(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<LeavePlanOnLeaveToday, TValue>> selector)
+		{
+			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
+		}
+	}
+
+	/// <summary>Leave Plane On Leave Tomorrow</summary>
+	[PublishedContentModel("leavePlaneOnLeaveTomorrow")]
+	public partial class LeavePlaneOnLeaveTomorrow : LeavePlanApplication
+	{
+#pragma warning disable 0109 // new is redundant
+		public new const string ModelTypeAlias = "leavePlaneOnLeaveTomorrow";
+		public new const PublishedItemType ModelItemType = PublishedItemType.Content;
+#pragma warning restore 0109
+
+		public LeavePlaneOnLeaveTomorrow(IPublishedContent content)
+			: base(content)
+		{ }
+
+#pragma warning disable 0109 // new is redundant
+		public new static PublishedContentType GetModelContentType()
+		{
+			return PublishedContentType.Get(ModelItemType, ModelTypeAlias);
+		}
+#pragma warning restore 0109
+
+		public static PublishedPropertyType GetModelPropertyType<TValue>(Expression<Func<LeavePlaneOnLeaveTomorrow, TValue>> selector)
 		{
 			return PublishedContentModelUtility.GetModelPropertyType(GetModelContentType(), selector);
 		}

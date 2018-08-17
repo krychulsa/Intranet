@@ -1,0 +1,88 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.LeavePlanApplication>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@{
+	Layout = "Master2.cshtml";
+}
+<div style="margin-top:15px">
+    <div style="margin-bottom:10px">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="list-group">
+                    <!--Car booking entry-->
+                    <a href="~/leave-plan-public-holiday-list/" class="list-group-item disabled" style="padding:0px;margin:0px;">
+                        <div class="card-header" style="padding:2px 0px 5px 10px" id="headingTen">
+                            <h5 class="mb-0">
+                                <button class="btn btn-sm btn-link text-secondary" style="text-decoration:none; width:100%" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                    <div class="row">
+                                        <div class="col-sm-4">PUBLIC HOLIDAY LIST</div>
+                                        <div class="col-sm-8" style="text-align:right"><img style="max-width:15px; padding-top:5px" src="https://png.icons8.com/material/50/000000/more-than.png"></div>
+                                    </div>
+                                </button>
+                            </h5>
+                        </div>
+                    </a>
+                    <!--Car booking Update-->
+                    <a href="~/leave-plan-listing/" class="list-group-item disabled" style="padding:0px;margin:0px;">
+                        <div class="card-header" style="padding:2px 0px 5px 10px" id="headingTen">
+                            <h5 class="mb-0">
+                                <button class="btn btn-sm btn-link text-secondary" style="text-decoration:none; width:100%" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                    <div class="row">
+                                        <div class="col-sm-4">LEAVE PLAN LISTING</div>
+                                        <div class="col-sm-8" style="text-align:right"><img style="max-width:15px; padding-top:5px" src="https://png.icons8.com/material/50/000000/more-than.png"></div>
+                                    </div>
+                                </button>
+                            </h5>
+                        </div>
+                    </a>
+
+                    <!--Car booking Monthly List-->
+                    <a href="~/leave-plan-staff-plan-by-date-list/" class="list-group-item disabled" style="padding:0px;margin:0px;">
+                        <div class="card-header" style="padding:2px 0px 5px 10px" id="headingTen">
+                            <h5 class="mb-0">
+                                <button class="btn btn-sm btn-link text-secondary" style="text-decoration:none; width:100%" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                    <div class="row">
+                                        <div class="col-sm-4">STAFF's PLAN BY DATE LIST </div>
+                                        <div class="col-sm-8" style="text-align:right"><img style="max-width:15px; padding-top:5px" src="https://png.icons8.com/material/50/000000/more-than.png"></div>
+                                    </div>
+                                </button>
+                            </h5>
+                        </div>
+                    </a>
+
+                    <!--Car booking On Active-->
+                    <a href="~/leave-plan-on-leave-today/" class="list-group-item disabled" style="padding:0px;margin:0px;">
+                        <div class="card-header" style="padding:2px 0px 5px 10px" id="headingTen">
+                            <h5 class="mb-0">
+                                <button class="btn btn-sm btn-link text-secondary" style="text-decoration:none; width:100%" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                    <div class="row">
+                                        <div class="col-sm-4">TODAY ON LEAVE</div>
+                                        <div class="col-sm-8" style="text-align:right"><img style="max-width:15px; padding-top:5px" src="https://png.icons8.com/material/50/000000/more-than.png"></div>
+                                    </div>
+                                </button>
+                            </h5>
+                        </div>
+                    </a>
+
+                    <!--Car booking On Active-->
+                    <a href="~/leave-plane-on-leave-tomorrow/" class="list-group-item disabled" style="padding:0px;margin:0px;">
+                        <div class="card-header" style="padding:2px 0px 5px 10px" id="headingTen">
+                            <h5 class="mb-0">
+                                <button class="btn btn-sm btn-link text-secondary" style="text-decoration:none; width:100%" data-toggle="collapse" data-target="#collapseTen" aria-expanded="false" aria-controls="collapseTen">
+                                    <div class="row">
+                                        <div class="col-sm-4">TOMMORROW ON LEAVE</div>
+                                        <div class="col-sm-8" style="text-align:right"><img style="max-width:15px; padding-top:5px" src="https://png.icons8.com/material/50/000000/more-than.png"></div>
+                                    </div>
+                                </button>
+                            </h5>
+                        </div>
+                    </a>
+
+                </div>
+            </div>
+            <div class="col-sm-9" style="background-color:lavenderblush;">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+</div>
+<hr />

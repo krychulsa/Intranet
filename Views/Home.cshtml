@@ -89,7 +89,6 @@
                         <h6>On Leave Today</h6>
                     </div>
                     <hr />
-                    
                     <thead class="bg-danger text-white">
                         <tr>
                             <td scope="col">Employee</td>
@@ -99,11 +98,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        
                             @foreach (var item in OnLeaveEmployeeToday)
                             {
                                 var a = myDb1.SingleOrDefault<fi_onleave_ref>(String.Format("SELECT * FROM EMPLEAVEPLANBackup WHERE lpcode = {0} AND backup_date = CONVERT(DATETIME,CONVERT(VARCHAR(12),GETDATE(),112))", @item.LPCODE));
-                                
                             <tr>
                                 <td>@item.EmployeeName</td>
                                 <td>@item.Department</td>

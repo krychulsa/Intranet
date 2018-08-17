@@ -1,0 +1,190 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.CarBookingOnActive>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@using Intranet.ModelCollection;
+@{
+    Layout = "CarBooking.cshtml";
+}
+@{
+    var tblCarBooking = "tblCarBookingTesting";
+    int currentPage = 0;
+    var myDb = new PetaPoco.Database("FIHRDBPath");
+    string queryDb = String.Format("SELECT * FROM {1} WHERE AppointmentDate >= '{0}' AND Status LIKE '%A%'", DateTime.Now.ToString().Substring(0, DateTime.Now.ToString().IndexOf(" ")), tblCarBooking) ;
+    if (IsPost)
+    {
+        if (Request.Form["UpdateActiveBooking"] == "UpdateActiveBooking")
+        {
+            var fi_obj_update = new PetaPoco.Database("FIHRDBPath").SingleOrDefault<fi_CarBooking>("SELECT * FROM tblCarBookingTesting WHERE No=@0", Request.Form["postUpdateNo"]);
+            fi_obj_update.Status = Request.Form["CarBookingSearchStatusSelect"];
+            myDb.Update(String.Format("{0}", tblCarBooking), "No", fi_obj_update);
+            Response.Redirect("~/car-booking-on-active/");
+        }
+        else
+        {
+            currentPage = Convert.ToInt32(Request.Form["btnPage"]);
+        }
+    }
+    else
+    {
+        currentPage += 1;
+    }
+
+    PetaPoco.Page<fi_CarBooking> ListCarBooking;
+    ListCarBooking = myDb.Page<fi_CarBooking>(currentPage, 60, queryDb);
+    var listDepartment = myDb.Query<fi_department>("SELECT * FROM Departments");
+    int i = 0;
+
+}
+
+@{
+    var setDefualtTimeCurFrom = String.Format("{0:u}", DateTime.Now.AddDays(-(DateTime.Now.Day) + 1)).Substring(0, DateTime.Now.ToString().IndexOf(" ") + 1);
+    var setDefualtTimeCurTo = String.Format("{0:u}", DateTime.Now).Substring(0, DateTime.Now.ToString().IndexOf(" ") + 1);
+}
+<table class="table table-sm">
+    <thead class="thead-light" style="font-weight:300">
+        <tr>
+            <th scope="col">No</th>
+            <th scope="col">App Date</th>
+            <th scope="col">Time</th>
+            <th scope="col">Booker</th>
+            <th scope="col">Dept</th>
+            <th scope="col">BookingDate</th>
+            <th scope="col">ETD</th>
+            <th scope="col">ETA</th>
+            <th scope="col">Car</th>
+            <th scope="col">Destination</th>
+            <th scope="col">Reason</th>
+            <th scope="col">Status</th>
+            <th scope="col">Destination</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in ListCarBooking.Items)
+        {
+            <tr>
+                <td>@row.No</td>
+                @*<td>@row.AppointmentDate.Substring(0, @row.AppointmentDate.IndexOf(" "))</td>*@
+                <td>@row.AppointmentDate.Substring(0, @row.AppointmentDate.IndexOf(" "))</td>
+                <td>@row.Time</td>
+                <td>@row.BookerName</td>
+                <td>@row.Department</td>
+                @*<td>@row.BookingDate.Substring(0, @row.BookingDate.IndexOf(" "))</td>*@
+                <td>@row.BookingDate.Substring(0, @row.AppointmentDate.IndexOf(" "))</td>
+                <td>@row.ETD</td>
+                <td>@row.ETA</td>
+                <td>@row.Car</td>
+                <td>@row.Destination</td>
+                <td>@row.Reason</td>
+                <td>@row.Status</td>
+                <td>
+                    <div class="btn-group" role="group">
+                        @*Action Popup model*@
+                        <form action="#" method="post">
+                            <input type="text" hidden name="postUpdateNo" value="@row.No" />
+                            <button type="button" data-toggle="modal" data-target="@String.Format("#{0}{1}", @row.No, @row.BookerName)" style="margin-right:5px; border-radius:20px; padding:2px 10px 2px 10px; margin-top:5px" class="btn btn-outline-dark">Action </button>
+                            <div class="modal fade" id="@String.Format("{0}{1}", @row.No, @row.BookerName)" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalCenterTitle">Confirm delete booker: @row.BookerName</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <h6>You've selected a booker with the following informations:</h6>
+                                            <ul>
+                                                <li>No : @row.No</li>
+                                                <li>Name : @row.BookerName</li>
+                                                <li>Car modal : @row.Car</li>
+                                                <li>Department : @row.Department</li>
+                                            </ul>
+
+                                            <div class="form-group row">
+                                                <div class="col-sm-12">
+                                                    <select name="CarBookingSearchStatusSelect" class="custom-select" style="border-radius:25px">
+                                                        <option value="A" selected>Active</option>
+                                                        <option value="D">Depart</option>
+                                                        <option value="C">Cancel</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            Are you sure to update this booking?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" style="border-radius:25px; padding:4px 25px 4px 25px" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+                                            <button type="submit" name="UpdateActiveBooking" value="UpdateActiveBooking" style="border-radius:25px; padding:4px 25px 4px 25px" class="btn btn-outline-danger">Yes</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<hr />
+<div class="text-center">
+    <form action="~/car-booking-update/" method="post">
+        <div class="btn-group">
+            @for (i = 1; i <= ListCarBooking.TotalPages; i++)
+            {
+                @*Display Previous btn*@
+            if (ListCarBooking.CurrentPage != 1)
+            {
+                if (i == 1)
+                {
+                    var j = ListCarBooking.CurrentPage - 1;
+                    <button type="submit" name="btnPage" value="@j" class="btn btn-outline-dark"><< Previous</button>
+                }
+            }
+            if (ListCarBooking.TotalPages > 25)
+            {
+                @*Diplay More Btn*@
+            if (i > 12 && i < (ListCarBooking.TotalPages - 4))
+            {
+                if (i == ListCarBooking.TotalPages - 6 && i != ListCarBooking.CurrentPage)
+                {
+                    <button type="button" class="btn btn-outline-dark">. . .</button>
+                }
+            }
+            else
+            {
+                @*Diplay More Btn*@
+            if (i == ListCarBooking.CurrentPage)
+            {
+                <button type="submit" name="btnPage" value="@i" class="btn btn-outline-dark text-danger btn-danger disabled">@i</button>
+            }
+            else
+            {
+                <button type="submit" name="btnPage" value="@i" class="btn btn-outline-dark">@i</button>
+                    }
+                }
+            }
+            else
+            {
+                @*Diplay More Btn*@
+            if (i == ListCarBooking.CurrentPage)
+            {
+                <button type="submit" name="btnPage" value="@i" class="btn btn-outline-dark text-danger btn-danger disabled">@i</button>
+            }
+            else
+            {
+                <button type="submit" name="btnPage" value="@i" class="btn btn-outline-dark">@i</button>
+                }
+            }
+            @*Display Next Btn*@
+            if (ListCarBooking.CurrentPage != ListCarBooking.TotalPages)
+            {
+                if (i == ListCarBooking.TotalPages)
+                {
+                    var j = ListCarBooking.CurrentPage + 1;
+                    <button type="submit" name="btnPage" value="@j" class="btn btn-outline-dark">Next >></button>
+                    }
+                }
+            }
+        </div>
+    </form>
+</div>

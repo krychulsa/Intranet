@@ -1,0 +1,164 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.CarBookingLogin>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@using Intranet.ModelCollection;
+@{
+    Layout = "Master2.cshtml";
+}
+
+@{ 
+    //Variable and Constant
+    var myDb = new PetaPoco.Database("FIHRDBPath");
+    var SqlQuerySelDobAppUser = "";
+    var loginMsg = "";
+    var userLogin = Request.Form["CarBookingUsername"];
+    var welcomeMsg = "";
+    welcomeMsg = String.Format("{0}", CurrentPage.pageTitle);
+    welcomeMsg = welcomeMsg.ToUpper().Substring(0, welcomeMsg.LastIndexOf(" "));
+}
+
+@{
+    //Database and Query section
+    if (IsPost)
+    {
+        if (Request.Form["submitLogin"] == "submitLogin")
+        {
+            SqlQuerySelDobAppUser = string.Format("SELECT * FROM AppUser WHERE AppSite = 'Car booking' AND Username = '{0}'", Request.Form["CarBookingUsername"]);
+            var DobAppUser = myDb.SingleOrDefault<fi_AppUser>(SqlQuerySelDobAppUser);
+            if (DobAppUser != null)
+            {
+                if (DobAppUser.Password == Request.Form["CarBookingPassword"])
+                {
+                    Response.Redirect("~/car-booking-welcome/");
+                }
+                else
+                {
+                    loginMsg = "Incorrect Username or Password!";
+                    <div class="alert alert-danger" role="alert">
+                        <div class="row">
+                            <div class="col-sm-1 text-right">
+                                <img src="https://png.icons8.com/color/48/000000/high-importance.png" style="height:30px; padding:0px; margin:0px">
+                            </div>
+                            <div class="col-sm-11" style="padding-top:2px">
+                                @loginMsg
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    }
+}
+<div class="container">
+    <div class="text-center"s>
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item" style="margin-left:35%">
+                <a class="nav-link" data-toggle="tab" href="#welcome">WELCOME</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#signIn">LOGIN</a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#createAcc">CREATE ACCOUNT</a>
+            </li>
+        </ul>
+    </div>
+    
+    <div class="tab-content">
+        <!-- Welcome pane -->
+        <div id="welcome" class="container tab-pane fade">
+            <br>
+            <div class="text-center" style="width:50%; margin-left:25%">
+                <h5 style="font-weight:600; color:#d41945">WELCOME TO @welcomeMsg</h5>
+                <hr/>
+                <p style="text-align:left">@CurrentPage.pageDescription</p>
+            </div>
+            
+        </div>
+        <!--Login pane-->
+        <div id="signIn" class="container active tab-pane">
+            <div class="container-fluid">
+                <div style="width:50%; margin-left:25%; margin-top:20px">
+                    <div class="text-center">
+                        <h5 style="font-weight:600; color:#d41945">Please login to get start</h5>
+                    </div>
+                    <hr />
+                    <div class="container card shadow">
+                        <form method="post">
+                            <div class="form-group row">
+                                <label for="staticEmail" class="col-sm-3 col-form-label">Username</label>
+                                <div class="col-sm-12">
+                                    <input type="text" value="admin" class="form-control" name="CarBookingUsername" placeholder="Username...">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="inputPassword" class="col-sm-3 col-form-label">Password</label>
+                                <div class="col-sm-12">
+                                    <input type="text" value="admin123" class="form-control" name="CarBookingPassword" placeholder="Password">
+                                </div>
+                            </div>
+                            <input type="text" hidden name="IsCarbookingLogin" value="true" />
+                            <div class="text-center">
+                                <button class="btn btn-outline-grey" style="padding: 6px 20px 6px 20px" type="submit" name="submitLogin" value="submitLogin">Login</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Create account pane-->
+        <div id="createAcc" class="container fade tab-pane">
+            <div class="container-fluid">
+                <div style="width:50%; margin-left:25%; margin-top:40px">
+                    <div class="text-center">
+                        <h5 style="font-weight:600; color:#d41945">Fill in the form to get start</h5>
+                    </div>
+                    <hr />
+                    <form>
+                        <div class="container card shadow" style="margin:15px 0px 15px 0px">
+                            <div class="card-body">
+                                <div>
+                                    <p>Admin information</p>
+                                    <hr />
+                                </div>
+                                <div class="form-group row" style="padding-top:10px">
+                                    <label for="staticEmail" class="col-sm-3 col-form-label">Username</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="CarBookingUsername" placeholder="Admin username">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="inputPassword" class="col-sm-3 col-form-label">Password</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="CarBookingPassword" placeholder="Admin password">
+                                    </div>
+                                </div>
+                                <div>
+                                    <p>New user information</p>
+                                    <hr />
+                                </div>
+                                <div class="form-group row" style="padding-top:10px">
+                                    <label for="Username" class="col-sm-3 col-form-label">Username</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="CarBookingUsername" placeholder="New username...">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="Password" class="col-sm-3 col-form-label">Password</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" id="CarBookingPassword" placeholder="Password">
+                                    </div>
+                                </div>
+                                <div class="text-center">
+                                    <button class="btn btn-outline-grey" style="padding: 6px 20px 6px 20px" type="submitLogin">Login</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

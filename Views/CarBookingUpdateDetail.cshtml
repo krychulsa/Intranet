@@ -1,0 +1,146 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.CarBookingUpdateDetail>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@using Intranet.ModelCollection;
+@{
+    Layout = "CarBooking.cshtml";
+}
+@*Select all from Table Departments:*@
+@{
+    var tblCarBooking = "tblCarBookingTesting";
+    var mydb = new PetaPoco.Database("FIHRDBPath");
+    var listDepartment = mydb.Query<fi_department>("SELECT * FROM Departments");
+}
+
+@*Insert new object to Table Car Booking*@
+@{
+    if (IsPost)
+    {
+        if (Request.Form["UpdateBooking"] == "UpdateBooking")
+        {
+            var objCarBooing = new PetaPoco.Database("FIHRDBPath").SingleOrDefault<fi_CarBooking>("SELECT * FROM @1 WHERE No=@0", Request.Form["CarBookingNo"], tblCarBooking);
+            objCarBooing.No = Request.Form["CarBookingNo"];
+            objCarBooing.Destination = Request.Form["CarBookingDestination"];
+            objCarBooing.AppointmentDate = Request.Form["CarBookingAppointment"];
+            objCarBooing.Time = Request.Form["CarBookingTime"];
+            objCarBooing.BookerName = Request.Form["CarBookingBooker"];
+            objCarBooing.Department = Request.Form["CarBookingDepartment"];
+            objCarBooing.BookingDate = Request.Form["CarBookingBookingDate"];
+            objCarBooing.ETD = Request.Form["CarBookingEstimateDepartTime"];
+            objCarBooing.ETA = Request.Form["CarBookingEstimateArrivalTime"];
+            objCarBooing.Car = Request.Form["CarBookingcarmodel"];
+            objCarBooing.Destination = Request.Form["CarBookingDestination"];
+            objCarBooing.Reason = Request.Form["CarBookingReason"];
+            objCarBooing.Status = Request.Form["CarBookingStatus"];
+            mydb.Update("tblCarBookingTesting", "No", objCarBooing);
+            Response.Redirect("~/car-booking-update/");
+        }
+        else
+        {
+            Response.Write("Not update.");
+        }
+    }
+}
+<form action="#" method="post">
+    <div class="container card shadow">
+        <div class="card-body">
+            <div>
+                <div class="text-center">
+                    <h5 class="text-danger">Fill in information for CAR BOOKING SYSTEM</h5>
+                </div>
+                <hr />
+            </div>
+            <div class="form-group row" style="padding-top:10px">
+                <label for="No" class="col-sm-3 col-form-label">No</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" name="CarBookingNo" value="@Request.Form["postNo"]" readonly>
+                </div>
+            </div>
+            <div class="form-group row" style="padding-top:10px">
+                <label for="Booker" class="col-sm-3 col-form-label">Booker</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" name="CarBookingBooker" value="@Request.Form["postBookerName"]" placeholder="Enter booker name">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Model" class="col-sm-3 col-form-label">Car model</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" name="CarBookingcarmodel" value="@Request.Form["postCar"]" placeholder="Enter car model">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Model" class="col-sm-3 col-form-label">Departments</label>
+                <div class="col-sm-9">
+                    <select name="CarBookingDepartment" class="custom-select">
+                        <option  value="@Request.Form["postDepartment"]" selected>@Request.Form["postDepartment"]</option>
+                        @foreach (var dData in listDepartment)
+                        {
+                            <option value="@dData.ID">@dData.DeptName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="ApointmentDate" class="col-sm-3 col-form-label">Apointment Date</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" value="@Request.Form["postAppointmentDate"]" name="CarBookingAppointment" placeholder="Select apointment date">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Time" class="col-sm-3 col-form-label">Time</label>
+                <div class="col-sm-9">
+                    <select name="CarbookingTime" class="custom-select">
+                        <option value="@Request.Form["postTime"]">@Request.Form["postTime"]</option>
+                        <option value="am">am</option>
+                        <option value="pm">pm</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="BookingDate" class="col-sm-3 col-form-label">Booking Date</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" value="@Request.Form["postBookingDate"]" name="CarBookingBookingDate" placeholder="Select booking date">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="EstimateDepartTime" class="col-sm-3 col-form-label">Estiamte depart time</label>
+                <div class="col-sm-9">
+                    <input type="time" class="form-control" value="@Request.Form["postETD"]" name="CarBookingEstimateDepartTime" placeholder="Select estimate depart time">
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="EstimateArrivalTime" class="col-sm-3 col-form-label">Estiamte arrival time</label>
+                <div class="col-sm-9">
+                    <input type="time" class="form-control" value="@Request.Form["postETA"]" name="CarBookingEstimateArrivalTime" placeholder="Select estimate arrival time">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Destination" class="col-sm-3 col-form-label">Destination</label>
+                <div class="col-sm-9">
+                    <input type="text" class="form-control" value="@Request.Form["postDestination"]" name="CarBookingDestination" placeholder="Destination">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Reason" class="col-sm-3 col-form-label">Reason</label>
+                <div class="col-sm-9">
+                    <textarea type="text" class="form-control" name="CarBookingReason" placeholder="Type some reason...">@Request.Form["postReason"]</textarea>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="Status" class="col-sm-3 col-form-label">Status</label>
+                <div class="col-sm-9">
+                    <select name="CarBookingStatus" class="custom-select">
+                        <option value="@Request.Form["postStatus"]">@Request.Form["postStatus"]</option>
+                        <option value="A">A</option>
+                        <option value="D">D</option>
+                        <option value="C">C</option>
+                    </select>
+                </div>
+            </div>
+            <div class="text-center">
+                <button class="btn btn-outline-danger" style="padding: 6px 20px 6px 20px" type="submit" name="UpdateBooking" value="UpdateBooking">Update Booking</button>
+            </div>
+        </div>
+    </div>
+</form>

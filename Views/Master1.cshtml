@@ -10,6 +10,7 @@
     var result = myDb.Query<ForteHolidays>("SELECT HolidayDescription as title, HolidyDate as start FROM tbllHoliday");
     var json = Html.Raw(Json.Encode(result));
 };
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -26,62 +27,6 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
     <link href="~/Css/Calendar.css" rel="stylesheet" />
     <title>@CurrentPage.pageTitle</title>
-    <style>
-        .topMenu{
-            color:#d41945 !important; 
-            font-weight:500;
-        }
-        #wrap {
-            width: 1100px;
-            margin: 0 auto;
-        }
-
-        #external-events {
-            float: left;
-            width: 150px;
-            padding: 0 10px;
-            text-align: left;
-        }
-
-            #external-events h4 {
-                font-size: 16px;
-                margin-top: 0;
-                padding-top: 1em;
-            }
-
-        .external-event { /* try to mimick the look of a real event */
-            margin: 10px 0;
-            padding: 2px 4px;
-            background: #3366CC;
-            color: #fff;
-            font-size: .85em;
-            cursor: pointer;
-        }
-
-        #external-events p {
-            margin: 1.5em 0;
-            font-size: 11px;
-            color: #666;
-        }
-
-            #external-events p input {
-                margin: 0;
-                vertical-align: middle;
-            }
-
-        #calendar {
-            /* 		float: right; */
-            margin: 0 auto;
-            width: 800px;
-            background-color: #FFFFFF;
-            border-radius: 6px;
-            box-shadow: 0 1px 2px #C3C3C3;
-            -webkit-box-shadow: 0px 0px 21px 2px rgba(0,0,0,0.18);
-            -moz-box-shadow: 0px 0px 21px 2px rgba(0,0,0,0.18);
-            box-shadow: 0px 0px 21px 2px rgba(0,0,0,0.18);
-        }
-    </style>
-
 </head>
 <body>
     <nav class="navbar navbar-expand-lg fixed-top bg-white navbar-light navbar-fixed-top border" style="border:0 0 1px 0 solid grey">
@@ -150,7 +95,6 @@
                         </div>
                     </li>
 
-
                     @*Applications*@
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle topMenu" href="#" id="navbardrop" data-toggle="dropdown">
@@ -177,8 +121,6 @@
                                     <a class="dropdown-item border-bottom" href="#">Print card</a>
                                 </div>
                             </div>
-
-
                         </div>
                     </li>
 
@@ -460,7 +402,7 @@
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 
-    <script>
+    @*<script>
 
 	$(document).ready(function() {
 	    var date = new Date();
@@ -569,6 +511,6 @@
 		});
 	});
     </script>
-    <script src="~/Js/Calendar.js"></script>
+    <script src="~/Js/Calendar.js"></script>*@
 </body>
 </html>

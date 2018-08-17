@@ -1,0 +1,186 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.LeavePlanListing>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@using Intranet.ModelCollection;
+@{
+	Layout = "LeavePlanApplication.cshtml";
+}
+
+@{
+    var myDb = new PetaPoco.Database("FIHRDBPath");
+    var result = myDb.Query<fi_LeavePlanHoliday>("SELECT id as id, HolidayDescription as name, HolidyDate as startDate, HolidyDate as endDate FROM tbllHoliday");
+    var json = Html.Raw(Json.Encode(result));
+    //Response.Write(json);
+}
+
+
+@{
+    
+    var resultHolidayRemainThisYear = myDb.Query<ForteHolidays>("SELECT * from VW_CH_HOLIDAY_REMAIN_THIS_YEAR");
+    //var json = Html.Raw(Json.Encode(result));
+}
+
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link href="~/Css/bootstrap-year-calendar/bootstrap-year-calendar.css" rel="stylesheet" />
+    <script src="~/Js/bootstrap-year-calendar/bootstrap-year-calendar.js"></script>
+    <script src="~/Js/bootstrap-year-calendar/index.js"></script>
+</head>
+<body>
+    <div id="calendar"></div>
+
+    <hr />
+    <div class="container" style="margin-top:20px">
+        <div class="row">
+            <div class="col-sm-9"
+                 >
+                <ul class="list-group">
+                    @foreach (var getHoliday in resultHolidayRemainThisYear)
+                    {
+                        <li class="list-group-item text-danger">@getHoliday.start.Substring(0, getHoliday.start.IndexOf(" "))  @getHoliday.title</li>
+                    }
+                </ul>   
+            </div>
+        </div>
+        
+    </div>
+
+
+
+    <script>
+        function editEvent(event) {
+            $('#event-modal input[name="event-index"]').val(event ? event.id : '');
+            $('#event-modal input[name="event-name"]').val(event ? event.name : '');
+            $('#event-modal input[name="event-location"]').val(event ? event.location : '');
+            $('#event-modal input[name="event-start-date"]').datepicker('update', event ? event.startDate : '');
+            $('#event-modal input[name="event-end-date"]').datepicker('update', event ? event.endDate : '');
+            $('#event-modal').modal();
+        }
+
+        function deleteEvent(event) {
+            var dataSource = $('#calendar').data('calendar').getDataSource();
+
+            for (var i in dataSource) {
+                if (dataSource[i].id == event.id) {
+                    dataSource.splice(i, 1);
+                    break;
+                }
+            }
+
+            $('#calendar').data('calendar').setDataSource(dataSource);
+        }
+
+        function saveEvent() {
+            var event = {
+                id: $('#event-modal input[name="event-index"]').val(),
+                name: $('#event-modal input[name="event-name"]').val(),
+                location: $('#event-modal input[name="event-location"]').val(),
+                startDate: $('#event-modal input[name="event-start-date"]').datepicker('getDate'),
+                endDate: $('#event-modal input[name="event-end-date"]').datepicker('getDate')
+            }
+
+            var dataSource = $('#calendar').data('calendar').getDataSource();
+
+            if (event.id) {
+                for (var i in dataSource) {
+                    if (dataSource[i].id == event.id) {
+                        dataSource[i].name = event.name;
+                        dataSource[i].location = event.location;
+                        dataSource[i].startDate = event.startDate;
+                        dataSource[i].endDate = event.endDate;
+                    }
+                }
+            }
+            else {
+                var newId = 0;
+                for (var i in dataSource) {
+                    if (dataSource[i].id > newId) {
+                        newId = dataSource[i].id;
+                    }
+                }
+
+                newId++;
+                event.id = newId;
+
+                dataSource.push(event);
+            }
+
+            $('#calendar').data('calendar').setDataSource(dataSource);
+            $('#event-modal').modal('hide');
+        }
+
+        $(function () {
+            var currentYear = new Date().getFullYear();
+
+            $('#calendar').calendar({
+                enableContextMenu: true,
+                enableRangeSelection: true,
+                contextMenuItems: [
+                  {
+                      text: 'Update',
+                      click: editEvent
+                  },
+                  {
+                      text: 'Delete',
+                      click: deleteEvent
+                  }
+                ],
+                selectRange: function (e) {
+                    editEvent({ startDate: e.startDate, endDate: e.endDate });
+                },
+                mouseOnDay: function (e) {
+                    if (e.events.length > 0) {
+                        var content = '';
+
+                        for (var i in e.events) {
+                            content += '<div class="event-tooltip-content">'
+                                            + '<div class="event-name" style="color:' + e.events[i].color + '">' + e.events[i].name + '</div>'
+                                            + '<div class="event-location">' + e.events[i].location + '</div>'
+                                        + '</div>';
+                        }
+                        $(e.element).popover({
+                            trigger: 'manual',
+                            container: 'body',
+                            html: true,
+                            content: content
+                        });
+                        $(e.element).popover('show');
+                    }
+                },
+                mouseOutDay: function (e) {
+                    if (e.events.length > 0) {
+                        $(e.element).popover('hide');
+                    }
+                },
+                dayContextMenu: function (e) {
+                    $(e.element).popover('hide');
+                },
+                dataSource: myData(@json),
+            });
+            $('#save-event').click(function () {
+                saveEvent();
+            });
+        });
+        
+        function myData(json){
+            for (var key in json)
+            {
+                if (json.hasOwnProperty(key))
+                {
+                    // here you have access to
+                    json[key].startDate = new Date(parseInt(json[key].startDate.substr(6)));
+                    json[key].endDate = new Date(parseInt(json[key].endDate.substr(6)));
+                }
+            }
+            return json;
+        }
+    </script>
+</body>
+
+</html>

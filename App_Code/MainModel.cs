@@ -81,4 +81,39 @@ namespace Intranet.ModelCollection
         public string Id { get; set; }
         public string lpcode { get; set; }
     }
+
+   public class fi_AppUser
+    {
+        public string Id { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Role { get; set; }
+        public string AppSite { get; set; }
+        public string CreateDate { get; set; }
+        public string CreateBy { get; set; }
+    }
+    public class fi_CarBooking
+    {
+        public string No { get; set; }
+        public string AppointmentDate { get; set; }
+        public string Time { get; set; }
+        public string BookerName { get; set; }
+        public string Department { get; set; }
+        public string BookingDate { get; set; }
+        public string ETD { get; set; }
+        public string ETA { get; set; }
+        public string Car { get; set; }
+        public string Destination { get; set; }
+        public string Reason { get; set; }
+        public string Status { get; set; }
+    }
+
+    public class fi_LeavePlanHoliday
+    {
+        public string id { get; set; }
+        public string name { get; set; }
+        public string location { get { return ""; } }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
+    }
 }
