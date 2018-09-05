@@ -1,0 +1,364 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.TravelInsuranceList>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@using Intranet.ModelCollection;
+@{
+    Layout = "TravelInsurance.cshtml";
+}
+@{
+    var setDefualtTimeCurFrom = String.Format("{0:u}", DateTime.Now.AddDays(-(DateTime.Now.Day) + 1)).Substring(0, DateTime.Now.ToString().IndexOf(" ") + 2);
+    var setDefualtTimeCurTo = String.Format("{0:u}", DateTime.Now).Substring(0, DateTime.Now.ToString().IndexOf(" ") + 2);
+}
+@{
+    var DatabaseName = "DBTravelUATConnectionString";
+    var myDbTravelIns = new PetaPoco.Database(DatabaseName);
+    var SqlQuerySelTravelIns = "SELECT * FROM VW_CH_TRAVELLIST_SELECT_ALL ORDER BY travel_id DESC";
+    var SqlQuerySelTravelIns1 = "SELECT * FROM VW_CH_TRAVELLIST_SELECT_ALL";
+    var createdBy = Request.Form["travelSearchCreatedBy"];
+    var paymentStatus = Request.Form["travelSearchPaymentStatus"];
+    var startDate = Request.Form["travelSearchStartDate"];
+    var endDate = Request.Form["travelSearchEndDate"];
+    var keywordSearch = Request.Form["travelSearchKeyword"];
+    var excelNaming = DateTime.Now.ToString("dd MMM yyyy") + " List All Travel insurance";   
+    if (IsPost)
+    {
+        if(Request.Form["submitTravelSearch"] == "submitTravelSearch")
+        {
+            SqlQuerySelTravelIns = string.Format("SELECT * FROM VW_CH_TRAVELLIST_SELECT_ALL WHERE created_by LIKE '%{0}%' AND paid_status "+
+            " LIKE '%{1}%' AND created_date >= '{2}' AND created_date <= '{3}' AND str(travel_id) + "+
+            "(CASE WHEN certificate_id IS NULL THEN '' ELSE str(certificate_id) END) +itinerary + client_name + client_phone LIKE '%{4}%'",
+                    createdBy,
+                    paymentStatus,
+                    startDate,
+                    endDate,
+                    keywordSearch
+                );
+            SqlQuerySelTravelIns1 = SqlQuerySelTravelIns;
+            excelNaming = excelNaming + " From " + startDate + " to" + endDate;
+        }
+    }
+    var DataTravelIns = myDbTravelIns.Query<fi_travelIns_Select_All>(SqlQuerySelTravelIns);
+    var DataTravelInsForExp = myDbTravelIns.Query<fi_travelIns_Select_All>(SqlQuerySelTravelIns1);
+ }
+
+<style type="text/css">
+    form{
+           margin-bottom:0px !important;
+    }
+    .tblData{
+        font-size:12px; 
+        white-space:nowrap;
+    }
+    .tblDataBody{
+        font-size:12px; 
+        white-space:nowrap; 
+        padding:5px 10px 5px 10px;
+    }
+    .btn-padding{
+        padding-left: 20px;
+        padding-right: 20px;
+        border-radius: 25px;
+    }
+    tr{
+        cursor: pointer; 
+        transition: all .25s ease-in-out;
+    }
+    .selected{
+        background-color: #d31945 !important;
+        color: #fff !important;
+    }
+</style>
+<div class="container-fluid">
+    <div class="text-center">
+        <form action="#" method="post">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <select name="travelSearchCreatedBy" class="custom-select form-control-sm" style="border-radius:25px">
+                                <option value="-1" selected>CREATED BY: ALL</option>
+                                <option value="public">PUBLIC</option>
+                                <option value="forteInsurances">FORTE INSURANCE: F0001</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 border-gray">
+                    <div class="form-group row">
+                        <div class="col-sm-12">
+                            <select name="travelSearchPaymentStatus" class="custom-select form-control-sm" style="border-radius:25px">
+                                <option value="" selected>PAYMENT STATUS : ALL</option>
+                                <option value="paid">PAID</option>
+                                <option value="unpaid">UNPAID</option>
+                                <option value="cancel">CANCEL</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group row">
+                        <label for="Model" class="col-sm-2 col-form-label">From</label>
+                        <div class="col-sm-10">
+                            <input type="date" style="border-radius:25px" class="form-control form-control-sm" name="travelSearchStartDate"value="@setDefualtTimeCurFrom">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group row">
+                        <label for="Model" class="col-sm-2 col-form-label">To</label>
+                        <div class="col-sm-10">
+                            <input type="date" style="border-radius:25px" class="form-control form-control-sm" name="travelSearchEndDate" value="@setDefualtTimeCurTo">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-11">
+                    <div class="form-group row">
+                        <label for="Model" class="col-sm-9 col-form-label left" style="font-size:15px">Input shortcut Quotation No. e.g. [T0001]-0000<span class="text-danger">34</span>, or certificate No. e.g. T0001-0000<span class="text-danger">12</span> as the red one :</label>
+                        <div class="col-sm-3">
+                            <input type="text" style="border-radius:25px" class="form-control form-control-sm" name="travelSearchKeyword" placeholder="QUOTE No. or CERTIFICATE No.">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-1">
+                    <div class="col-sm-12 border-left border-gray">
+                        <button style="border-radius:25px;" type="submit" value="submitTravelSearch" name="submitTravelSearch" class="btn btn-sm btn-outline-dark">Search</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="table-responsive" style="max-height:90%; width:100%; overflow-y:scroll">
+    <table  id="table" class="table-sm table-hover table-striped">
+        <thead>
+            <tr class="border" id="first-tr">
+                <th class="tblData" scope="col">
+                    <input type="checkbox" id="select_all" name="checkBox" value="" />
+                </th>
+                <th class="tblData" scope="col">INSURED NAME</th>
+                <th class="tblData" scope="col">CERT No.</th>
+                <th class="tblData" scope="col">QUOTE No.</th>
+                <th class="tblData" scope="col">COMMENCING</th>
+                <th class="tblData" scope="col">RETURNING</th>
+                <th class="tblData" scope="col">DAYs</th>
+                <th class="tblData" scope="col">ITINERARY</th>
+                <th class="tblData" scope="col">PLAN</th>
+                <th class="tblData" scope="col">GROSS PREMIUM</th>
+                <th class="tblData" scope="col">COMMISSION</th>
+                <th class="tblData" scope="col">NET PREMIUM</th>
+                <th class="tblData" scope="col">PHONE NUMBER</th>
+                <th class="tblData" scope="col">ISSUED BY</th>
+                <th class="tblData" scope="col">ISSUED AGENT</th>
+                <th class="tblData" scope="col">QUOTED BY</th>
+                <th class="tblData" scope="col">QUOTED AGENT</th>
+                <th class="tblData" scope="col">STATUS</th>
+                <th class="tblData" scope="col">E</th>
+                <th class="text-center" style="font-size:12px; width:200px; white-space:nowrap" colspan="5" scope="col">ACTION</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var i in DataTravelIns)
+            {
+                <tr class="border">
+                    <td>
+                        <div class="btn-group" role="group">
+                            <input type="checkbox" class="checkbox" name="checkbox_cert" value="" />
+                        </div>
+                    </td>
+                    <td class="tblDataBody">@i.client_name.ToUpper()</td>
+                    <td class="tblDataBody">@i.certificate_id</td>
+                    <td class="tblDataBody">@i.travel_id</td>
+                    <td class="tblDataBody">@i.travel_depart_date</td>
+                    <td class="tblDataBody">@i.travel_return_date</td>
+                    <td class="tblDataBody">@i.travel_days</td>
+                    <td class="tblDataBody">@i.itinerary</td>
+                    <td class="tblDataBody">@i.cover_plan</td>
+                    <td class="tblDataBody">@i.premium</td>
+                    <td class="tblDataBody">@i.commission</td>
+                    <td class="tblDataBody">@i.net_premium</td>
+                    <td class="tblDataBody">@i.client_phone</td>
+                    <td class="tblDataBody">@i.issued_by</td>
+                    <td class="tblDataBody">@i.issued_agent</td>
+                    <td class="tblDataBody">@i.quoted_by</td>
+                    <td class="tblDataBody">@i.quoted_agent</td>
+                    <td class="tblDataBody">@i.paid_status</td>
+                    <td class="tblDataBody">@i.endorsement</td>
+                    <td style="padding-left:30px">
+                        @if (i.certificate_id != null)
+                        {
+                            <form action="~/travel-insurance-certificate/"​ target="_blank" method="post">
+                                <input hidden type="text" name="postCert_number" value="@string.Format("P-000{0}",@i.certificate_id)" />
+                                <input hidden type="text" name="postClient_name" value="@i.client_name.ToUpper()" />
+                                <input hidden type="text" name="postClient_passport" value="@i.client_passport" />
+                                <input hidden type="text" name="postItinerary_full" value="@i.itinerary_full" />
+                                <input hidden type="text" name="postClient_dob" value="@i.client_dob" />
+                                <input hidden type="text" name="postTravel_depart_date" value="@i.travel_depart_date" />
+                                <input hidden type="text" name="postTravel_return_date" value="@i.travel_return_date" />
+                                <input hidden type="text" name="postTravel_days" value="@i.travel_days" />
+                                <input hidden type="text" name="postCover_plan" value="@string.Format("{0} PLAN", i.cover_plan)" />
+                                <input hidden type="text" name="postPremium" value="@i.premium" />
+                                <input hidden type="text" name="postCreated_date" value="@i.created_date.ToString("dd MMM yyy")" />
+                                <input hidden type="text" name="postClient_beneficiary" value="@i.client_beneficiary" />
+                                <input hidden type="text" name="postClient_beneficiary_phone" value="@i.client_beneficiary_phone" />
+                                <button type="submit" style="margin-right:5px; font-size:11px; border-radius:20px; padding:0px 5px;" name="travelInsView" value="travelInsView" class="btn btn-sm btn-outline-dark">View</button>
+                            </form>
+                        }
+                    </td>
+                    <td>
+                        @if (i.certificate_id == null)
+                        {
+                            <form action="~/update-staff-info/" method="post">
+                                <button type="submit" style="margin-right:5px; font-size:11px; border-radius:20px; padding:0px 5px;" name="btnUpdate" value="Update" class="btn btn-sm btn-outline-dark">Issue</button>
+                            </form>
+                        }
+                    </td>
+                    <td>
+                        <form action="~/staff-detail-info/" method="post">
+                            <button type="submit" style="margin-right:5px; font-size:11px; border-radius:20px; padding:0px 5px;" name="btnUpdate" value="Update" class="btn btn-sm btn-outline-dark">Edit</button>
+                        </form>
+                    </td>
+                    <td>
+                        @if (i.endorsement == "0")
+                        {
+                            <form action="~/update-staff-info/" method="post">
+                                <button type="submit" style="margin-right:5px; font-size:11px; border-radius:20px; padding:0px 5px;" name="btnUpdate" value="Update" class="btn btn-sm btn-outline-dark">Endose</button>
+                            </form>
+                        }
+                    </td>
+                    <td>
+                        <form action="~/staff-detail-info/" method="post">
+                            <button type="submit" style="margin-right:5px; font-size:11px; border-radius:20px; padding:0px 5px;" name="btnUpdate" value="Update" class="btn btn-sm btn-outline-dark">Cancel</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+<hr />
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6"   >
+            @*Leave page as blank!*@
+        </div>
+        <div class="col-sm-6">
+            <button type="button" class="btn btn-sm btn-padding btn-outline-danger">Paid</button>
+            <button type="button" class="btn btn-sm btn-padding btn-outline-danger">Unpaid</button>
+            <button type="button" onclick="exportExcel()" class="btn btn-sm btn-padding btn-outline-danger">Export Excel</button>
+            <button type="button" class="btn btn-sm btn-padding btn-outline-danger">Preview Cert.</button>
+        </div>
+    </div>
+</div>
+
+@*FOR EXPORTING TO PDF ONLY*@
+
+<table border="1" width="100%" id="exp-html-table" data-cols-width="20,15,10" hidden>
+    <tbody>
+        <tr></tr>
+        <tr>
+            <td colspan="18" data-f-sz="15" data-f-color="d31945" data-a-h="center" data-a-v="center" data-f-underline="true" data-f->
+                @excelNaming.ToUpper()
+            </td>
+        </tr>
+        <tr></tr>
+        <tr data-fill-color="d31945" data-f-color="FFFFFFFF">
+            <th data-fill-color="d31945" data-f-color="FFFFFFFF" data-a-wrap="true">QUOTE No.</th>
+            <th data-fill-color="d31945" data-f-color="FFFFFFFF" data-a-wrap="true">INSURED NAME</th>
+            <th data-fill-color="d31945" data-f-color="FFFFFFFF" data-a-wrap="true">CERT No.</th>
+            <th data-fill-color="d31945" data-f-color="FFFFFFFF" data-a-wrap="true">COMMENCING</th>
+            <th data-fill-color="d31945" data-f-color="FFFFFFFF" data-a-wrap="true">RETURNING</th>
+            <th data-fill-color="d31945" data-f-color="FFFFFFFF" data-a-wrap="true">DAYs</th>
+            <th data-fill-color="d31945" data-f-color="FFFFFFFF" data-a-wrap="true">ITINERARY</th>
+            <th data-fill-color="d31945" data-f-color="FFFFFFFF" data-a-wrap="true">PLAN</th>
+            <th data-fill-color="d31945" data-f-color="FFFFFFFF" data-a-wrap="true">GROSS PREMIUM</th>
+            <th data-fill-color="d31945" data-f-color="FFFFFFFF" data-a-wrap="true">COMMISSION</th>
+            <th data-fill-color="d31945" data-f-color="FFFFFFFF" data-a-wrap="true">NET PREMIUM</th>
+            <th data-fill-color="d31945" data-f-color="FFFFFFFF" data-a-wrap="true">PHONE NUMBER</th>
+            <th data-fill-color="d31945" data-f-color="FFFFFFFF" data-a-wrap="true">ISSUED BY</th>
+            <th data-fill-color="d31945" data-f-color="FFFFFFFF" data-a-wrap="true">ISSUED AGENT</th>
+            <th data-fill-color="d31945" data-f-color="FFFFFFFF" data-a-wrap="true">QUOTED BY</th>
+            <th data-fill-color="d31945" data-f-color="FFFFFFFF" data-a-wrap="true">QUOTED AGENT</th>
+            <th data-fill-color="d31945" data-f-color="FFFFFFFF" data-a-wrap="true">PAYMENT STATUS</th>
+            <th data-fill-color="d31945" data-f-color="FFFFFFFF" data-a-wrap="true">ENDOSEMENT</th>
+        </tr>
+        @foreach (var i in DataTravelInsForExp)
+        {
+        <tr>
+            <td data-t="n" data-num-fmt="0">@i.travel_id.AsInt()</td>
+            <td>@i.client_name.ToUpper()</td>
+            <td data-t="n">@i.certificate_id</td>
+            <td>@i.travel_depart_date</td>
+            <td>@i.travel_return_date</td>
+            <td data-t="n" data-num-fmt="0">@i.travel_days.AsInt()</td>
+            <td>@i.itinerary</td>
+            <td>@i.cover_plan</td>
+            <td data-t="n" data-num-fmt="0.00 $">@i.premium.AsDecimal()</td>
+            <td data-t="n" data-num-fmt="0.00 $">@i.commission.AsDecimal()</td>
+            <td data-t="n" data-num-fmt="0.00 $">@i.net_premium.AsDecimal()</td>
+            <td>@i.client_phone</td>
+            <td>@i.issued_by</td>
+            <td>@i.issued_agent</td>
+            <td>@i.quoted_by</td>
+            <td>@i.quoted_agent</td>
+            <td>@i.paid_status</td>
+            <td data-t="n" data-num-fmt="0">@i.endorsement</td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+<script>
+    var select_all = document.getElementById("select_all"); //select all checkbox
+    var checkboxes = document.getElementsByClassName("checkbox"); //checkbox items
+    //select all checkboxes
+    select_all.addEventListener("change", function (e) {
+        for (i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = select_all.checked;
+        }
+    });
+    for (var i = 0; i < checkboxes.length; i++) {
+        checkboxes[i].addEventListener('change', function (e) { //".checkbox" change 
+            //uncheck "select all", if one of the listed checkbox item is unchecked
+            if (this.checked == false) {
+                select_all.checked = false;
+            }
+            //check "select all" if all checkbox items are checked
+            if (document.querySelectorAll('.checkbox:checked').length == checkboxes.length) {
+                select_all.checked = true;
+            }
+        });
+    }
+</script>
+<script>
+        function exportExcel() {
+            XLSX.utils.html.save_table_as_excel(document.getElementById('exp-html-table'), { name: '@excelNaming'+'.xlsx' })
+        }
+</script>
+
+<script>
+    function selectedRow(){
+        var index,
+            table = document.getElementById("table");
+        for(var i = 1; i < table.rows.length; i++)
+        {
+            table.rows[i].onclick = function()
+            {
+                    // remove the background from the previous selected row
+                if(typeof index !== "undefined"){
+                    table.rows[index].classList.toggle("selected");
+                }
+                console.log(typeof index);
+                // get the selected row index
+                index = this.rowIndex;
+                // add class selected to the row
+                this.classList.toggle("selected");
+                console.log(typeof index);
+                };
+        }
+
+    }
+    selectedRow();
+</script>

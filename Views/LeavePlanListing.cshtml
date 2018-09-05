@@ -2,20 +2,34 @@
 @using ContentModels = Umbraco.Web.PublishedContentModels;
 @using Intranet.ModelCollection;
 @{
-	Layout = "LeavePlanApplication.cshtml";
+    Layout = "LeavePlanApplication.cshtml";
 }
-
+        
 @{
     var myDb = new PetaPoco.Database("FIHRDBPath");
-    var result = myDb.Query<fi_LeavePlanHoliday>("SELECT id as id, HolidayDescription as name, HolidyDate as startDate, HolidyDate as endDate FROM tbllHoliday");
+    var dbQuery = "SELECT id as id, HolidayDescription as name, HolidyDate as startDate, HolidyDate as endDate FROM tbllHoliday";
+    var dbQuery1 = String.Format("SELECT * from VW_CH_EMPLOYEES_ON_LEAVE_CURRENT_YEAR WHERE [Employee ID] < {0}", 0);
+    var displayFirst = true;
+    if (IsPost)
+    {
+        if(Request.Form["submitSearch"]== "submitSearch")
+        {
+            dbQuery = String.Format("SELECT [Employee ID] as id, [Employee Name] as name, PLANDATE as startDate, PLANDATE as endDate FROM VW_LEAVE_BY_DAY WHERE [Employee ID] = {0}", Request.Form["EmpSel"]);
+            dbQuery1 = String.Format("SELECT [Employee ID] as id, PLANDATE, [Employee Name] as name, Department, [Leave Date] as startDate, [Leave Date] as endDate from VW_CH_EMPLOYEES_ON_LEAVE_CURRENT_YEAR WHERE [Employee ID]={0} ORDER BY PLANDATE DESC", Request.Form["EmpSel"]);
+        }
+    }
+    var result = myDb.Query<fi_LeavePlanOnLeave>(dbQuery);
     var json = Html.Raw(Json.Encode(result));
     //Response.Write(json);
 }
 
+@{ 
+    var selectAllEmp = myDb.Query<fi_employee>("SELECT * FROM view_employees WHERE DeptID NOT LIKE 'DIR%'  ORDER BY fullname ASC");
+}
 
 @{
     
-    var resultHolidayRemainThisYear = myDb.Query<ForteHolidays>("SELECT * from VW_CH_HOLIDAY_REMAIN_THIS_YEAR");
+    var resultOnLeaveRemainThisYear = myDb.Query<fi_LeavePlanOnLeave>(dbQuery1);
     //var json = Html.Raw(Json.Encode(result));
 }
 
@@ -33,26 +47,61 @@
     <script src="~/Js/bootstrap-year-calendar/index.js"></script>
 </head>
 <body>
+    <div class="row">
+       
+    </div>
+
+
+    <form action="#" method="post">
+        <div class="row">
+            <div class="col-sm-10 border-right border-gray">
+                <select name="EmpSel" class="custom-select" style="border-radius:25px; height:40px; margin-left: 10px">
+                    <option value="" selected>Choose Employee name</option>
+                    @foreach (var empData in selectAllEmp)
+            {
+                        <option value="@empData.ID">@empData.fullname</option>
+                    }
+                </select>
+            </div>
+            <div class="col-sm-2 border-left border-gray">
+                <button style="border-radius:25px; height:40px" type="submit" value="submitSearch" name="submitSearch" class="btn btn-grey">Search</button>
+            </div>
+        </div>
+    </form>
+
+
+
+    <hr />
+
     <div id="calendar"></div>
 
     <hr />
     <div class="container" style="margin-top:20px">
         <div class="row">
-            <div class="col-sm-9"
-                 >
-                <ul class="list-group">
-                    @foreach (var getHoliday in resultHolidayRemainThisYear)
-                    {
-                        <li class="list-group-item text-danger">@getHoliday.start.Substring(0, getHoliday.start.IndexOf(" "))  @getHoliday.title</li>
-                    }
-                </ul>   
+            <div class="col-sm-9">
+                
+                    <ul class="list-group">
+                        @foreach (var getOnLeave in resultOnLeaveRemainThisYear)
+                        {
+                            if (displayFirst)
+                            {
+                                <li class="list-group-item text-white bg-danger text-center" style="font-weight: bold; font-size:15px">Employee: @getOnLeave.name on leave @DateTime.Now.Year</li>
+                                displayFirst = false;
+                            }
+                            @*if (DateTime.Now.Month > getOnLeave.PLANDATE.Month)
+                            {   
+                                <li class="list-group-item text-info">@getOnLeave.startDate.ToString("dd-MMM-yyyy") | @getOnLeave.name</li>
+                            }
+                            else
+                            {
+                                <li class="list-group-item text-danger">@getOnLeave.startDate.ToString("dd-MMM-yyyy") | @getOnLeave.name</li>
+                            }*@
+                            <li class="list-group-item text-danger">@getOnLeave.startDate.ToString("dd-MMM-yyyy") | @getOnLeave.name</li>
+                        }
+                    </ul>
             </div>
         </div>
-        
     </div>
-
-
-
     <script>
         function editEvent(event) {
             $('#event-modal input[name="event-index"]').val(event ? event.id : '');

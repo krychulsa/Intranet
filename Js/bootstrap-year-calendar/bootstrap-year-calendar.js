@@ -741,11 +741,11 @@
 				parent.append(subMenu);
 			}
 		},
-		_getColor: function(colorString) {
-			var div = $('<div />');
-			div.css('color', colorString);
+		//_getColor: function(colorString) {
+		//	var div = $('<div />');
+		//	div.css('color', colorString);
 
-		},
+		//},
 		_getDate: function(elt) {
 			var day = elt.children('.day-content').text();
 			var month = elt.closest('.month-container').data('month-id');
@@ -935,7 +935,7 @@
 		}
 	};
 
-	var colors = $.fn.calendar.colors = ['#2C8FC9', '#9CB703', '#F5BB00', '#FF4A32', '#B56CE2', '#45A597'];
+	var colors = $.fn.calendar.colors = ['#FF0000'];
 
 	$(function(){
 		$('[data-provide="calendar"]').each(function() {

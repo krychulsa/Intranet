@@ -7,17 +7,13 @@
 
 
 @{
-    var myDb = new PetaPoco.Database("FIHRDBPath");
-    var result = myDb.Query<fi_LeavePlanHoliday>("SELECT id as id, HolidayDescription as name, HolidyDate as startDate, HolidyDate as endDate FROM tbllHoliday");
+    var dbName = "FIHRDBPath";
+    var myDb = new PetaPoco.Database(dbName);
+    var sqlQueryLeavePlanHoliday = "SELECT id as id, HolidayDescription as name, HolidyDate as startDate, HolidyDate as endDate FROM tbllHoliday";
+    var sqlQueryHoliday = "SELECT * from VW_CH_HOLIDAY_REMAIN_THIS_YEAR";
+    var result = myDb.Query<fi_LeavePlanHoliday>(sqlQueryLeavePlanHoliday);
     var json = Html.Raw(Json.Encode(result));
-    //Response.Write(json);
-}
-
-
-@{
-
-    var resultHolidayRemainThisYear = myDb.Query<ForteHolidays>("SELECT * from VW_CH_HOLIDAY_REMAIN_THIS_YEAR");
-    //var json = Html.Raw(Json.Encode(result));
+    var resultHolidayRemainThisYear = myDb.Query<ForteHolidays>(sqlQueryHoliday);
 }
 
 <!DOCTYPE html>
@@ -35,7 +31,6 @@
 </head>
 <body>
     <div id="calendar"></div>
-
     <hr />
     <div class="container" style="margin-top:20px">
         <div class="row">
@@ -48,10 +43,7 @@
                 </ul>
             </div>
         </div>
-
     </div>
-
-
 
     <script>
         function editEvent(event) {
@@ -161,7 +153,7 @@
                 dayContextMenu: function (e) {
                     $(e.element).popover('hide');
                 },
-                dataSource: myData(@json),
+                dataSource: myData(@json), //Event get from database as object  Json
             });
             $('#save-event').click(function () {
                 saveEvent();
@@ -173,7 +165,7 @@
             {
                 if (json.hasOwnProperty(key))
                 {
-                    // here you have access to
+                    // Convert date to object format that supportted by 
                     json[key].startDate = new Date(parseInt(json[key].startDate.substr(6)));
                     json[key].endDate = new Date(parseInt(json[key].endDate.substr(6)));
                 }

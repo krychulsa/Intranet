@@ -1,0 +1,376 @@
+﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.TravelInsuranceCertificate>
+@using ContentModels = Umbraco.Web.PublishedContentModels;
+@using Intranet.ModelCollection;
+@{
+	Layout = null;
+}
+@{
+    var postClient_name = "";
+    var postClient_passport = "";
+    var postItinerary_full = "";
+    var postClient_dob = "";
+    var postTravel_depart_date = "";
+    var postTravel_return_date = "";
+    var postTravel_days = "";
+    var postCover_plan = "";
+    var postPremium = "";
+    var postCreated_date = "";
+    var postCert_number = "";
+    var postClient_beneficiary = "";
+    var postClient_beneficiary_phone = "";
+    int years = 0;
+    if (IsPost)
+    {
+        if (Request.Form["travelInsView"] == "travelInsView")
+        {
+            postClient_name = Request.Form["postClient_name"];
+            postCert_number = Request.Form["postCert_number"];
+            postClient_passport = Request.Form["postClient_passport"];
+            postItinerary_full = Request.Form["postItinerary_full"];
+            postClient_dob = Request.Form["postClient_dob"];
+            postClient_dob = postClient_dob.Substring(0, postClient_dob.IndexOf(" "));
+            postTravel_depart_date = Request.Form["postTravel_depart_date"];
+            postTravel_return_date = Request.Form["postTravel_return_date"];
+            postTravel_days = Request.Form["postTravel_days"];
+            postCover_plan = Request.Form["postCover_plan"];
+            postPremium = Request.Form["postPremium"];
+            postCreated_date = Request.Form["postCreated_date"];
+            postClient_beneficiary = Request.Form["postClient_beneficiary"];
+            postClient_beneficiary_phone = Request.Form["postClient_beneficiary_phone"];
+            var birthDate = Convert.ToDateTime(postClient_dob);
+            DateTime now = DateTime.Today; // today is fine, don't need the timestamp from now
+            years = now.Year - birthDate.Year;
+            if (now.Month < birthDate.Month || (now.Month == birthDate.Month && now.Day < birthDate.Day))
+            {
+                --years;
+            }
+        }
+    }
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>
+        Travel Insurance Certificate
+    </title>
+    <link href="~/Css/Certificate/TravelInsuranceCertificate.css" rel="stylesheet" />
+    <script src="~/Js/Certificate/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnPrint').click(function () {
+                window.print();
+                e.preventDefault();
+            });
+        });
+
+        function genPDF() {
+            mycanvas = $('#dlArea12');
+            html2canvas(mycanvas[0]).then(function (canvas) {
+                var doc = new jsPDF('p', 'mm', 'a4');
+                doc.addImage(canvas, 'JPEG', 0, 0);
+                doc.save('TravelInsurance.pdf');
+            });
+        }
+
+    </script>
+</head>
+
+<body>
+
+    <div id="dlArea12" class="page">
+        <div class="cert">
+            <div style="text-align:center; font-weight:bold;font-size:140%; margin-top:15px;">
+                <span class="en">TRAVELLERS’ CERTIFICATE OF INSURANCE</span>
+            </div>
+            <div style="float:right; right:0px; top:-30px; position:relative;" data-html2canvas-ignore="true" class="ScreenOnly">
+                <button id="btnPrint" class="btnPrint">PRINT</button>
+                <a href="javascript:genPDF()">Download PDF</a>
+            </div>
+            <div style="margin-top:-63px; margin-left:-7px; float:left; height:110px;">
+                <img height="100%" src="~/Image/Certificate/Forte_white_logo.png" />
+            </div>
+            <div class="clear"></div>
+            <div class="div_col_1">
+                <div>
+                    <div style="width:70%; float:left;"><span class="en">Name of Insured</span></div>
+                    <div style="width:30%; float:left;"><span class="en">Passport No.</span></div>
+                </div>
+                <div>
+                    <div style="width:70%; float:left; border:solid 1px gray; border-right:none; padding:4px; ">
+                        <span id="spnPolicyHolder"
+                              style="font-weight:bold;">@postClient_name</span>
+                    </div>
+                    <div style="width:30%; float:left; border:solid 1px gray; padding:4px;"><span id="spnPassport" style="font-weight:bold;">@postClient_passport</span></div>
+                </div>
+
+
+                <div class="br">&nbsp;</div>
+                <div>
+                    <div style="width:80%; float:left;"><span class="en">Date of Birth</span></div>
+                    <div style="width:20%; float:left;"><span class="en">Age</span></div>
+                </div>
+                <div>
+                    <div style="width:80%; float:left; border:solid 1px gray; border-right:none; padding:4px; ">
+                        <span id="spnDoB"
+                              style="font-weight:bold;">@postClient_dob</span>
+                    </div>
+                    <div style="width:20%; float:left; border:solid 1px gray; padding:4px; text-align:center;">
+                        <span id="spnAge"
+                              style="font-weight:bold;">@years</span>
+                    </div>
+                </div>
+
+
+                <div class="br">&nbsp;</div>
+                <div><span class="en">Address of Insured</span></div>
+                <div style="border:solid 1px gray; padding:4px;">
+                    <span id="spnAddress" style="font-weight:bold;">
+                        PHNOM PENH
+                        CAMBODIA
+                    </span>
+                </div>
+
+                <div class="br">&nbsp;</div>
+                <div>
+                    <span id="accompanyingchild" class="en"></span>
+                </div>
+                <div>
+                    <span id="spnChildren">
+
+                    </span>
+                </div>
+
+            </div>
+            <div class="div_col_2">
+                <div class="en" style="margin-top:-27px; float:right;">
+                    <div>
+                        <font style="font-weight:normal;">CERTIFICATE NO.:</font> <span id="lblCertificateNo" class="bold en">@postCert_number</span>
+                    </div>
+
+
+                </div>
+
+
+
+                <div>
+                    <span class="en">Itinerary</span>
+                </div>
+                <div style="border:solid 1px gray; padding:4px; font-weight:bold;">
+                    <span id="spnItinerary">@postItinerary_full</span>
+                </div>
+
+
+                <br />
+                <div>
+                    <div style="width:40%; float:left;"><span class="en">Comencing Date</span></div>
+                    <div style="width:40%; float:left;"><span class="en">Returning Date</span></div>
+                    <div style="width:20%; float:left;"><span class="en">Days</span></div>
+                </div>
+                <div>
+                    <div style="width:40%; float:left; border:solid 1px gray; border-right:none; padding:4px;font-weight:bold; ">@postTravel_depart_date</div>
+                    <div style="width:40%; float:left; border:solid 1px gray; border-right:none; padding:4px;font-weight:bold; ">@postTravel_return_date</div>
+                    <div style="width:20%; float:left; border:solid 1px gray; padding:4px; text-align:center;font-weight:bold;">@postTravel_days</div>
+                </div>
+
+                <div class="br">&nbsp;</div>
+                <div>
+                    <div style="width:60%; float:left;"><span class="en">Type of Plan</span></div>
+                    <div style="width:40%; float:left;"><span class="en">Premium</span></div>
+                </div>
+                <div>
+                    <div style="width:60%; float:left; border:solid 1px gray; border-right:none; padding:4px;font-weight:bold; ">
+                        @postCover_plan
+                    </div>
+                    <div style="width:40%; float:left; border:solid 1px gray; padding:4px; text-align:center;font-weight:bold;">
+                        @postPremium
+                    </div>
+                </div>
+
+                <div class="br">&nbsp;</div>
+                <div class="en bold">
+                    For and on behalf of Forte Insurance (Cambodia) Plc.
+                </div>
+                <div class="br">&nbsp;</div>
+                <div>
+
+                    <span class="en">Date of issue:</span>
+                    <span id="lblIssueDate" class="en bold">@postCreated_date</span>
+                </div>
+                <div style="float:right;margin-right:100px; width:65px; margin-top:-20px;" class="en">
+                    <img width="100%" src="~/Image/Certificate/Chairman-Signature.png" /> Carlo Cheo<br /> Chairman
+                </div>
+                <div style="float:right;margin-right:-170px; width:100px; margin-top:-20px;" class="en">
+                    <img width="100%" src="~/Image/Certificate/stamp.jpg" />
+                </div>
+
+            </div>
+            <div class="clear"></div>
+            <div class="bar">
+                <h3>BENEFITS AND MAXIMUM LIMITS PER POLICY</h3>
+            </div>
+            <div>
+                <div style="width:15%; float:left; border:solid 1px gray; border-right:none; padding:4px; text-align:center; height:40px; "><strong>SECTION</strong></div>
+                <div style="width:45%; float:left; border:solid 1px gray; border-right:none; padding:4px; text-align:center;height:40px;">
+                    <strong>
+                        BENEFITS
+                        AND LIMIT TYPE
+                    </strong>
+                </div>
+                <div style="width:20%; float:left; border:solid 1px gray; border-right:none; padding:4px; text-align:center;height:40px;">
+                    <strong>
+                        STANDARD
+                        PLAN (USD)
+                    </strong>
+                </div>
+                <div style="width:20%; float:left; border:solid 1px gray; padding:4px; text-align:center;height:40px;">
+                    <strong>
+                        SUPER
+                        PLAN (USD)
+                    </strong>
+                </div>
+            </div>
+            <div>
+                <div style="width:15%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px; text-align:center; ">I</div>
+                <div style="width:45%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px;">
+                    Oversea
+                    Medical and Additional Expenses
+                </div>
+                <div style="width:20%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px; text-align:center;">50,000</div>
+                <div style="width:20%; float:left; border:solid 1px gray; padding:4px;border-top:none; text-align:center;">100,000</div>
+            </div>
+            <div>
+                <div style="width:15%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px; text-align:center;    height: 35px; ">II</div>
+                <div style="width:45%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px;    height: 35px;">
+                    24-Hour
+                    Emergency Medical Assistant and Services
+                </div>
+                <div style="width:20%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px;    height: 35px; text-align:center;">
+                    Same
+                    Benefit for Each Insured Person.
+                </div>
+                <div style="width:20%; float:left; border:solid 1px gray; padding:4px;border-top:none; text-align:center;    height: 35px;">
+                    Same
+                    Benefit for Each Insured Person.
+                </div>
+            </div>
+            <div>
+                <div style="width:15%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px; text-align:center; ">III</div>
+                <div style="width:45%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px;">
+                    Accidental
+                    Death and Permanent Disablement
+                </div>
+                <div style="width:20%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px; text-align:center;">30,000</div>
+                <div style="width:20%; float:left; border:solid 1px gray; padding:4px;border-top:none; text-align:center;">60,000</div>
+            </div>
+            <div>
+                <div style="width:15%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px; text-align:center; ">IV</div>
+                <div style="width:45%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px;">
+                    Baggage
+                    and Personal Effects
+                </div>
+                <div style="width:20%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px; text-align:center;">1,500</div>
+                <div style="width:20%; float:left; border:solid 1px gray; padding:4px;border-top:none; text-align:center;">3,000</div>
+            </div>
+            <div>
+                <div style="width:15%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px; text-align:center; ">V</div>
+                <div style="width:45%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px;">
+                    Loss
+                    of Personal Money
+                </div>
+                <div style="width:20%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px; text-align:center;">300</div>
+                <div style="width:20%; float:left; border:solid 1px gray; padding:4px;border-top:none; text-align:center;">600</div>
+            </div>
+            <div>
+                <div style="width:15%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px; text-align:center; ">VI</div>
+                <div style="width:45%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px;">
+                    Personal
+                    Liability
+                </div>
+                <div style="width:20%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px; text-align:center;">250,000</div>
+                <div style="width:20%; float:left; border:solid 1px gray; padding:4px;border-top:none; text-align:center;">500,000</div>
+            </div>
+            <div>
+                <div style="width:15%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px; text-align:center; ">VII</div>
+                <div style="width:45%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px;">
+                    Loss
+                    of Deposits and Cancellation Charges
+                </div>
+                <div style="width:20%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px; text-align:center;">3,000</div>
+                <div style="width:20%; float:left; border:solid 1px gray; padding:4px;border-top:none; text-align:center;">6,000</div>
+            </div>
+            <div>
+                <div style="width:15%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px; text-align:center; ">VIII</div>
+                <div style="width:45%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px;">Hijack</div>
+                <div style="width:20%; float:left; border:solid 1px gray; border-right:none;border-top:none; padding:4px; text-align:center;">1,500</div>
+                <div style="width:20%; float:left; border:solid 1px gray; padding:4px;border-top:none; text-align:center;">3,000</div>
+            </div>
+            <p><strong>* Deductible: the first US $35 for each and every claim under section I, IV, V, VII</strong></p>
+            <p><strong>&nbsp;</strong></p>
+            <p>
+                <strong>
+                    Please examine the wording of the policy wording set in the attached leaflet to ensure the cover meets
+                    your needs, as you will be bound by the terms, exclusion and condition
+                </strong>
+            </p>
+            <div style="margin-top:15px;">
+                <div>
+                    <div style='width:50%; float:left;'>Beneficiary: <b>@postClient_beneficiary</b></div>
+                    <div style='width:50%; float:left;'>Telephone: <b>@postClient_beneficiary_phone</b></div>
+                </div>
+            </div>
+            <div class="br">&nbsp;</div>
+            <div class="bar" style="margin-top:20px;">
+                <h3>BASIC CLAIM PROCEDURE</h3>
+            </div>
+            <p>&nbsp;What to do in the event of a claim?</p>
+            <p><strong>&nbsp;</strong></p>
+            <ul style="padding-left:30px;">
+                <li>
+                    All claims must be advised to Forte Insurance (Cambodia) Plc. within 30 days after completion of the
+                    trip. Complete the claim form and submit it together with all original bills, receipts, and other relevant
+                    documents to substantiate your claim.
+                </li>
+                <li>
+                    <strong>Medical Expenses</strong> &ndash; Medical Claim Form, Doctor&rsquo;s reports or certificates
+                    and hospital bills are required to support a claim. Retain all original copies.
+                </li>
+                <li>
+                    <strong>Baggage Lost Or Stolen</strong> - Report to relevant authorities such as the police, hoteliers,
+                    airline, and shipping company within 24 hours and obtain information, report or reference number.
+                </li>
+                <li>
+                    <strong>Liability Claim</strong> - Do not admit liability. Request for any claim against you to be put
+                    in writing.
+                </li>
+                <li>
+                    <strong>Loss Of Money</strong> - Report to Police within 24 hours and obtain acknowledgment or written
+                    statement of the report.
+                </li>
+                <li>
+                    <strong>Emergency Medical Assistance &amp; Services</strong> - In the event of an emergency, serious
+                    injury or sickness, call the 24-hour SOS Helpline at Thailand Tel <strong>(66) 2205 7776</strong> &nbsp;to
+                    provide your name, policy number and details of the injury or sickness, contact of any attending doctor,
+                    your present location and how can you be contacted.
+                </li>
+            </ul>
+            <p>&nbsp;</p>
+            <p style="margin-left:30px">
+                <strong>&gt;&gt; Policy Wording and Claim Forms</strong>, download at: <span style="text-decoration: underline; color: #ff0000;">
+                    <a href="travel" target="_blank"><span style="color: #ff0000; text-decoration: underline;">www.forteinsurance.com/travel</span></a>
+                </span>
+            </p>
+            <p style="margin-left:30px">
+                <strong>&gt;&gt; Claim Inquiry</strong>, email us at&nbsp;<span style="color: #ff0000;">
+                    <a href="mailto:claims@forteinsurance.com"><span style="color: #ff0000;">claims@forteinsurance.com</span></a>
+                </span>&nbsp;<strong>Telephone</strong><strong>
+                    :
+                </strong><span style="color: #ff0000;">023 885 066/ 077 (ext. 455)</span>
+            </p>
+            </div>
+        </div>
+    <script src="~/Js/Certificate/html2canvas.js"></script>
+    <script src="~/Js/Certificate/jquery-2.1.3.js"></script>
+    <script src="~/Js/Certificate/jspdf.min.js"></script>
+</body>
+</html>

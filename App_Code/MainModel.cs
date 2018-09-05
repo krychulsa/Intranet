@@ -33,6 +33,7 @@ namespace Intranet.ModelCollection
         public string nv_Desc { get; set; }
         public string lastupdate { get; set; }
         public string group_name { get; set; }
+        public string fullname { get; set; }
     }
 
     public class ForteHolidays
@@ -115,5 +116,71 @@ namespace Intranet.ModelCollection
         public string location { get { return ""; } }
         public DateTime startDate { get; set; }
         public DateTime endDate { get; set; }
+    }
+
+    public class fi_LeavePlanOnLeave
+    {
+        public string id { get; set; }
+        public string name { get; set; }
+        public string location { get { return "On leave plan"; } }
+        public DateTime startDate { get; set; }
+        public DateTime endDate { get; set; }
+        public DateTime PLANDATE { get; set; } 
+    }
+   
+
+    public class fi_travelIns
+    {
+        public string certificate_id { get; set; }
+        public string travel_id { get; set; }
+        public string created_date { get; set; }
+        public string created_by { get; set; }
+        public string endorsement { get; set; }
+        public string c_aget_id { get; set; }
+        public string c_agent_code { get; set; }
+        public string status { get; set; }
+        public DateTime travel_depart_date { get; set; }
+        public DateTime travel_return_date { get; set; }
+        public string itinerary { get; set; }
+        public string cover_plan { get; set; }
+        public int premium { get; set; }
+        public string q_created_by { get; set; }
+        public string client_id { get; set; }
+        public string client_name { get; set; }
+        public string client_dob { get; set; }
+        public string client_passport { get; set; }
+        public string client_address { get; set; }
+        public string q_agent_id { get; set; }
+        public string q_agent_code { get; set; }
+    }
+    public class fi_travelIns_Select_All
+    {
+        public string client_name { get; set; }
+        public string certificate_id { get; set; }
+        public string travel_id { get; set; }
+        public string travel_depart_date { get; set; }
+        public string travel_return_date { get; set; }
+        public string travel_days { get; set; }
+        public string itinerary { get; set; }
+        public string cover_plan { get; set; }
+        public string premium { get; set; }
+        public string commission { get; set; }
+        public string net_premium { get; set; }
+        public string client_beneficiary { get; set; }
+        public string client_beneficiary_phone { get; set; }
+        public string client_address { get; set; }
+        public string client_phone { get; set; }
+        public string quoted_by { get; set; }
+        public string quoted_agent { get; set; }
+        public string issued_by { get; set; }
+        public string issued_agent { get; set; }
+        public string paid_status { get; set; }
+        public string endorsement { get; set; }
+        public string is_canceled { get; set; }
+        public string created_by { get; set; }
+        public string itinerary_full { get; set; }
+        public string client_passport { get; set; }
+        public DateTime client_dob { get; set; }
+        public DateTime created_date { get; set; }
     }
 }
