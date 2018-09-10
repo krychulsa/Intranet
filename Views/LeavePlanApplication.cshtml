@@ -1,13 +1,18 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.LeavePlanApplication>
 @using ContentModels = Umbraco.Web.PublishedContentModels;
 @{
+    //This page extended from Master2 page of Umbraco
 	Layout = "Master2.cshtml";
 }
+
+@*Master page of leave plan application*@
+
 <div style="margin-top:15px">
     <div style="margin-bottom:10px">
         <div class="row">
             <div class="col-sm-3">
                 <div class="list-group">
+
                     <!--Car booking entry-->
                     <a href="~/leave-plan-public-holiday-list/" class="list-group-item disabled" style="padding:0px;margin:0px;">
                         <div class="card-header" style="padding:2px 0px 5px 10px" id="headingTen">
@@ -21,6 +26,7 @@
                             </h5>
                         </div>
                     </a>
+
                     <!--Car booking Update-->
                     <a href="~/leave-plan-listing/" class="list-group-item disabled" style="padding:0px;margin:0px;">
                         <div class="card-header" style="padding:2px 0px 5px 10px" id="headingTen">

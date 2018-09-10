@@ -6,7 +6,9 @@
 }
 
 @{
-    var myDb = new PetaPoco.Database("FIHRDBPath");
+    //Open database connection using FIHRDBPath connection string
+        var myDb = new PetaPoco.Database("FIHRDBPath");
+
     if (IsPost)
     {
         if (Request.Form["submitUpdate"] == "submitUpdate")
@@ -39,8 +41,9 @@
 
             updateInfo.lastupdate = Request.Form["postlastupdate"];
             updateInfo.group_name = Request.Form["postgroup_name"];
-            
-            myDb.Update("Employees", "ID", updateInfo);
+            //Update employees information in database
+                myDb.Update("Employees", "ID", updateInfo);
+            //End update employees information in database
             Response.Redirect("~/");
         }
     }

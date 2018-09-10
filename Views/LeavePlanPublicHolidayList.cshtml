@@ -7,17 +7,11 @@
 
 
 @{
+    //Open database connection and queryData from database
     var myDb = new PetaPoco.Database("FIHRDBPath");
     var result = myDb.Query<fi_LeavePlanHoliday>("SELECT id as id, HolidayDescription as name, HolidyDate as startDate, HolidyDate as endDate FROM tbllHoliday");
     var json = Html.Raw(Json.Encode(result));
-    //Response.Write(json);
-}
-
-
-@{
-
     var resultHolidayRemainThisYear = myDb.Query<ForteHolidays>("SELECT * from VW_CH_HOLIDAY_REMAIN_THIS_YEAR");
-    //var json = Html.Raw(Json.Encode(result));
 }
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
@@ -144,6 +138,7 @@
                 dayContextMenu: function (e) {
                     $(e.element).popover('hide');
                 },
+                //List down all events in Calendar
                 dataSource: myData(@json),
             });
             $('#save-event').click(function () {
@@ -180,8 +175,6 @@
         
     </div>
     <hr />
-
-
 </body>
 
 </html>

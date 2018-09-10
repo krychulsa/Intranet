@@ -5,6 +5,7 @@
     Layout = "Master.cshtml";
 }
 @{
+    //Open database connection and DB Query
     int currentPage = 0;
     var myDb = new PetaPoco.Database("FIHRDBPath");
     string queryDb = "SELECT * FROM Employees ORDER BY ID DESC";
@@ -37,8 +38,9 @@
     listEmployees = myDb.Page<fi_employee>(currentPage, 20, queryDb);
     var listDepartment = myDb.Query<fi_department>("SELECT * FROM Departments");
     int i = 0;
-
+    //Open database connection and DB Query
     }
+
     <hr />
     <div class="text-center">
     <form action="#" method="post">

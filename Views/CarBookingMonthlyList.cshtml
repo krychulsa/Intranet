@@ -5,10 +5,16 @@
     Layout = "CarBooking.cshtml";
 }
 @{
+    //Define tatabase name
+    var dbName = "FIHRDBPath";
+    //PetaPoco open database connection
+    var myDb = new PetaPoco.Database(dbName);
+    //Define table name
     var tblCarBooking = "tblCarBookingTesting";
-    int currentPage = 0;
-    var myDb = new PetaPoco.Database("FIHRDBPath");
+    //Sql select query
     string queryDb = String.Format("SELECT * FROM {0} ORDER BY No DESC", tblCarBooking);
+    int currentPage = 0;
+
     if (IsPost)
     {
         if (Request.Form["submitCarbookingSearch"] == "submitCarbookingSearch")
@@ -17,6 +23,7 @@
             var CarBookingSearchEndDate = Request.Form["CarBookingSearchEndDate"];
             var CarBookingSearchStatusSelect = Request.Form["CarBookingSearchStatusSelect"];
             var CarBookingSearchDepartmentSelect = Request.Form["CarBookingSearchDepartmentSelect"];
+            //Query for seaching CARBOOKING list
             queryDb = string.Format(
                 "SELECT * FROM {4} WHERE BookingDate > '{0}' AND BookingDate < '{1}' AND Department like '%{2}%' AND Status LIKE '%{3}%'",
                 CarBookingSearchStartDate,
@@ -43,14 +50,16 @@
     {
         currentPage += 1;
     }
-
     PetaPoco.Page<fi_CarBooking> ListCarBooking;
+    //Execute CARBOOKING Query
     ListCarBooking = myDb.Page<fi_CarBooking>(currentPage, 60, queryDb);
+    //Select all departments for database
     var listDepartment = myDb.Query<fi_department>("SELECT * FROM Departments");
     int i = 0;
 }
 
-@{
+
+@{  // Get current date and current month from the beginning days of the month
     var setDefualtTimeCurFrom = String.Format("{0:u}", DateTime.Now.AddDays(-(DateTime.Now.Day) + 1)).Substring(0, DateTime.Now.ToString().IndexOf(" ") + 1);
     var setDefualtTimeCurTo = String.Format("{0:u}", DateTime.Now).Substring(0, DateTime.Now.ToString().IndexOf(" ") + 1);
 }
@@ -131,12 +140,10 @@
         {
             <tr>
                 <td>@row.No</td>
-                @*<td>@row.AppointmentDate.Substring(0, @row.AppointmentDate.IndexOf(" "))</td>*@
                 <td>@row.AppointmentDate.Substring(0, @row.AppointmentDate.IndexOf(" "))</td>
                 <td>@row.Time</td>
                 <td>@row.BookerName</td>
                 <td>@row.Department</td>
-                @*<td>@row.BookingDate.Substring(0, @row.BookingDate.IndexOf(" "))</td>*@
                 <td>@row.BookingDate.Substring(0, @row.AppointmentDate.IndexOf(" "))</td>
                 <td>@row.ETA</td>
                 <td>@row.ETD</td>

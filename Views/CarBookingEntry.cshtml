@@ -5,18 +5,26 @@
     Layout = "CarBooking.cshtml";
 
 }
-@*Select all from Table Departments:*@
+
 @{ 
+    //Define tatabase name
+    var dbName = "FIHRDBPath";
+    //PetaPoco open database connection
+    var mydb = new PetaPoco.Database(dbName);
+    //Sql select query
+    var sqlQueryDepartment = "SELECT * FROM Departments";
+    //Define table name
     var tblCarBooking = "tblCarBookingTesting";
-    var mydb = new PetaPoco.Database("FIHRDBPath");
-    var listDepartment = mydb.Query<fi_department>("SELECT * FROM Departments");
+    //Sql execute query
+    var listDepartment = mydb.Query<fi_department>(sqlQueryDepartment);
 }
 
 @*Insert new object to Table Car Booking*@
 @{ 
     if (IsPost) {
         if (Request.Form["submitBooking"] == "submitBooking")
-        {   
+        {
+            // Create Carbooking object and assign value for insert to Database
             var objCarBooing = new fi_CarBooking();
             objCarBooing.AppointmentDate = Request.Form["CarBookingAppointment"];
             objCarBooing.Time = Request.Form["CarBookingTime"];
@@ -29,6 +37,7 @@
             objCarBooing.Destination = Request.Form["CarBookingDestination"];
             objCarBooing.Reason = Request.Form["CarBookingReason"];
             objCarBooing.Status = "A";
+            //Insert into database using petapoco
             mydb.Insert(String.Format("{0}", tblCarBooking) , "No", true, objCarBooing);
             Response.Redirect("~/car-booking-update/");
         }

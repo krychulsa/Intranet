@@ -5,14 +5,19 @@
     Layout = "CarBooking.cshtml";
 }
 @{
+    //Define table name
     var tblCarBooking = "tblCarBookingTesting";
+    //Define the initial page for pager
     int currentPage = 0;
+    //Open database connection
     var myDb = new PetaPoco.Database("FIHRDBPath");
+    //Define query for selection
     string queryDb = String.Format("SELECT * FROM {1} WHERE AppointmentDate >= '{0}' AND Status LIKE '%A%'", DateTime.Now.ToString().Substring(0, DateTime.Now.ToString().IndexOf(" ")), tblCarBooking) ;
     if (IsPost)
     {
-        if (Request.Form["UpdateActiveBooking"] == "UpdateActiveBooking")
+        if (Request.Form["UpdateActiveBooking"] == "UpdateActiveBooking") //if updateActiveBooking is clicked
         {
+            //Open database connection and execute the query for CARBOOKING
             var fi_obj_update = new PetaPoco.Database("FIHRDBPath").SingleOrDefault<fi_CarBooking>("SELECT * FROM tblCarBookingTesting WHERE No=@0", Request.Form["postUpdateNo"]);
             fi_obj_update.Status = Request.Form["CarBookingSearchStatusSelect"];
             myDb.Update(String.Format("{0}", tblCarBooking), "No", fi_obj_update);
@@ -27,15 +32,18 @@
     {
         currentPage += 1;
     }
-
+    //Open database connection
     PetaPoco.Page<fi_CarBooking> ListCarBooking;
+    //Execute query
     ListCarBooking = myDb.Page<fi_CarBooking>(currentPage, 60, queryDb);
+    //Select department
     var listDepartment = myDb.Query<fi_department>("SELECT * FROM Departments");
     int i = 0;
 
 }
 
 @{
+    //Set default time for CARBOOKING searching
     var setDefualtTimeCurFrom = String.Format("{0:u}", DateTime.Now.AddDays(-(DateTime.Now.Day) + 1)).Substring(0, DateTime.Now.ToString().IndexOf(" ") + 1);
     var setDefualtTimeCurTo = String.Format("{0:u}", DateTime.Now).Substring(0, DateTime.Now.ToString().IndexOf(" ") + 1);
 }

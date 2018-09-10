@@ -4,19 +4,23 @@
 @{
     Layout = "CarBooking.cshtml";
 }
-@*Select all from Table Departments:*@
+
 @{
+    @*Select all from Table Departments:*@
     var tblCarBooking = "tblCarBookingTesting";
+    //Open database connection
     var mydb = new PetaPoco.Database("FIHRDBPath");
+    //Execute query for select departments
     var listDepartment = mydb.Query<fi_department>("SELECT * FROM Departments");
 }
 
-@*Insert new object to Table Car Booking*@
+
 @{
     if (IsPost)
     {
         if (Request.Form["UpdateBooking"] == "UpdateBooking")
         {
+            @*Reinsert new object to Table Car Booking*@
             var objCarBooing = new PetaPoco.Database("FIHRDBPath").SingleOrDefault<fi_CarBooking>("SELECT * FROM @1 WHERE No=@0", Request.Form["CarBookingNo"], tblCarBooking);
             objCarBooing.No = Request.Form["CarBookingNo"];
             objCarBooing.Destination = Request.Form["CarBookingDestination"];
@@ -33,12 +37,12 @@
             objCarBooing.Status = Request.Form["CarBookingStatus"];
             mydb.Update("tblCarBookingTesting", "No", objCarBooing);
             Response.Redirect("~/car-booking-update/");
-        }
-        else
-        {
-            Response.Write("Not update.");
-        }
     }
+    else
+    {
+        Response.Write("Not update.");
+    }
+}
 }
 <form action="#" method="post">
     <div class="container card shadow">

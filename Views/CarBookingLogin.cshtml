@@ -6,8 +6,11 @@
 }
 
 @{ 
-    //Variable and Constant
-    var myDb = new PetaPoco.Database("FIHRDBPath");
+    //Define tatabase name
+    var dbName = "FIHRDBPath";
+    //PetaPoco open database connection
+    var mydb = new PetaPoco.Database(dbName);
+    //Varibale section
     var SqlQuerySelDobAppUser = "";
     var loginMsg = "";
     var userLogin = Request.Form["CarBookingUsername"];
@@ -23,7 +26,7 @@
         if (Request.Form["submitLogin"] == "submitLogin")
         {
             SqlQuerySelDobAppUser = string.Format("SELECT * FROM AppUser WHERE AppSite = 'Car booking' AND Username = '{0}'", Request.Form["CarBookingUsername"]);
-            var DobAppUser = myDb.SingleOrDefault<fi_AppUser>(SqlQuerySelDobAppUser);
+            var DobAppUser = mydb.SingleOrDefault<fi_AppUser>(SqlQuerySelDobAppUser);
             if (DobAppUser != null)
             {
                 if (DobAppUser.Password == Request.Form["CarBookingPassword"])

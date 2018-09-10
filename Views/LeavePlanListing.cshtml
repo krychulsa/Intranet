@@ -6,7 +6,11 @@
 }
         
 @{
-    var myDb = new PetaPoco.Database("FIHRDBPath");
+    //Sql block statement
+
+    //Open database connection with connection string
+    var myDb = new PetaPoco.Database("FIHRDBPath");// Connenction string = FIHRDBPath
+    //Sql Query statement 
     var dbQuery = "SELECT id as id, HolidayDescription as name, HolidyDate as startDate, HolidyDate as endDate FROM tbllHoliday";
     var dbQuery1 = String.Format("SELECT * from VW_CH_EMPLOYEES_ON_LEAVE_CURRENT_YEAR WHERE [Employee ID] < {0}", 0);
     var displayFirst = true;
@@ -19,18 +23,10 @@
         }
     }
     var result = myDb.Query<fi_LeavePlanOnLeave>(dbQuery);
-    var json = Html.Raw(Json.Encode(result));
-    //Response.Write(json);
-}
-
-@{ 
     var selectAllEmp = myDb.Query<fi_employee>("SELECT * FROM view_employees WHERE DeptID NOT LIKE 'DIR%'  ORDER BY fullname ASC");
-}
-
-@{
-    
     var resultOnLeaveRemainThisYear = myDb.Query<fi_LeavePlanOnLeave>(dbQuery1);
-    //var json = Html.Raw(Json.Encode(result));
+    var json = Html.Raw(Json.Encode(result));
+    //END Sql block statement
 }
 
 <!DOCTYPE html>
@@ -88,14 +84,6 @@
                                 <li class="list-group-item text-white bg-danger text-center" style="font-weight: bold; font-size:15px">Employee: @getOnLeave.name on leave @DateTime.Now.Year</li>
                                 displayFirst = false;
                             }
-                            @*if (DateTime.Now.Month > getOnLeave.PLANDATE.Month)
-                            {   
-                                <li class="list-group-item text-info">@getOnLeave.startDate.ToString("dd-MMM-yyyy") | @getOnLeave.name</li>
-                            }
-                            else
-                            {
-                                <li class="list-group-item text-danger">@getOnLeave.startDate.ToString("dd-MMM-yyyy") | @getOnLeave.name</li>
-                            }*@
                             <li class="list-group-item text-danger">@getOnLeave.startDate.ToString("dd-MMM-yyyy") | @getOnLeave.name</li>
                         }
                     </ul>

@@ -5,28 +5,21 @@
 	Layout = "Master.cshtml";
 }
 @{ 
-    var myDb = new PetaPoco.Database("FIHRDBPath");
-    var myDb1 = new PetaPoco.Database("FIHRDBPath");
-    //var CurrentTime = DateTime.Now.Date.ToString();
-    //CurrentTime = CurrentTime.Substring(0, @CurrentTime.IndexOf(" "));
-    //CurrentTime = CurrentTime.Substring(0, CurrentTime.Length - 4);
-    //CurrentTime = "1/2/";
+    //Define database name
+    var DatabaseName = "FIHRDBPath";
+    //Open datbase connection
+    var myDb = new PetaPoco.Database(DatabaseName);
+    //Query of selcet statement
     var SqlQuerySelDobEmployees = string.Format("SELECT ID, [Colleague Name] AS Colleague_Name, PhotoPath FROM Coll_Birthday_Photo");
-    var DOBEmployees = myDb.Query<fi_birthday>(SqlQuerySelDobEmployees);
     var SqlOnLeaveToday = "SELECT * FROM VW_CH_EMPLOYEES_ON_LEAVE_TODAY_REF";
     var SqlOnLeaveTmr = "SELECT * FROM VW_CH_EMPLOYEES_ON_LEAVE_TMR";
+    //Execute query
+    var DOBEmployees = myDb.Query<fi_birthday>(SqlQuerySelDobEmployees);
     var OnLeaveEmployeeToday = myDb.Query<fi_onleaveToday>(SqlOnLeaveToday);
     var OnLeaveEmployeeTmr = myDb.Query<fi_onleaveToday>(SqlOnLeaveTmr);
+    //To hide some column
     var hideCol = true;
-    //string CurrentTime = DateTime.Now.Date.ToString();
-    //CurrentTime = CurrentTime.Substring(0, @CurrentTime.IndexOf(" "));
 }
-
-@*@if(CurrentTime == "1/25/2018")
-{
-    <h6>@CurrentTime</h6>
-}
-<h6>@CurrentTime</h6>*@
 <hr />
 <div class="row">
     <div class="col-sm-3">
@@ -60,7 +53,6 @@
                                 {
                                     <img src="~/Image/Employees/default_emp.png" style="width:200px" alt="@k.Colleague_Name" />
                                 }
-
                                 <hr />
                                 <p class="text-dark">May the joy that you have spread in the past come back to you on this day. Wishing you a very happy birthday! <br /><span class="font-weight-bold">@k.Colleague_Name</span></p>
                             </div>
@@ -100,18 +92,21 @@
                     <tbody>
                             @foreach (var item in OnLeaveEmployeeToday)
                             {
-                                var a = myDb1.SingleOrDefault<fi_onleave_ref>(String.Format("SELECT * FROM EMPLEAVEPLANBackup WHERE lpcode = {0} AND backup_date = CONVERT(DATETIME,CONVERT(VARCHAR(12),GETDATE(),112))", @item.LPCODE));
+                                //Select employee on leave referrence
+                                var a = new PetaPoco.Database("FIHRDBPath").SingleOrDefault<fi_onleave_ref>(String.Format("SELECT * FROM EMPLEAVEPLANBackup WHERE lpcode = {0} AND backup_date = CONVERT(DATETIME,CONVERT(VARCHAR(12),GETDATE(),112))", @item.LPCODE));
                             <tr>
                                 <td>@item.EmployeeName</td>
                                 <td>@item.Department</td>
                                 @if(a != null)
                                 {
-                                    var b = myDb1.SingleOrDefault<fi_employee>(String.Format("SELECT * FROM Employees WHERE ID = '{0}'", @a.Id));
+                                    //In case that have referrence
+                                    var b = new PetaPoco.Database("FIHRDBPath").SingleOrDefault<fi_employee>(String.Format("SELECT * FROM Employees WHERE ID = '{0}'", @a.Id));
                                     <td>@b.Title @b.FirstName @b.LastName</td>
                                     <td>@b.Extension</td>
                                 }
                                 else
                                 {
+                                    //In case that haven't referrence
                                     <td>No referrence</td>
                                 }
                             </tr>
@@ -138,7 +133,6 @@
                         </tr>
                     </thead>
                     <tbody>
-
                         @foreach (var item in OnLeaveEmployeeTmr)
                         {
                             <tr>

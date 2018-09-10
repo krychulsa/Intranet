@@ -7,14 +7,21 @@
 
 
 @{
+    //database name
     var dbName = "FIHRDBPath";
+    //PetaPoco open database connection
     var myDb = new PetaPoco.Database(dbName);
+    //Sql select query
     var sqlQueryLeavePlanHoliday = "SELECT id as id, HolidayDescription as name, HolidyDate as startDate, HolidyDate as endDate FROM tbllHoliday";
     var sqlQueryHoliday = "SELECT * from VW_CH_HOLIDAY_REMAIN_THIS_YEAR";
-    var result = myDb.Query<fi_LeavePlanHoliday>(sqlQueryLeavePlanHoliday);
-    var json = Html.Raw(Json.Encode(result));
+    //Sql execute query
+    var resultPlanHoliday = myDb.Query<fi_LeavePlanHoliday>(sqlQueryLeavePlanHoliday);
     var resultHolidayRemainThisYear = myDb.Query<ForteHolidays>(sqlQueryHoliday);
+    //Convert into jSon object
+    var json = Html.Raw(Json.Encode(resultPlanHoliday));
 }
+
+
 
 <!DOCTYPE html>
 <html lang="en" dir="ltr">

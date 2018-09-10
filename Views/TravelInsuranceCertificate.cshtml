@@ -5,6 +5,7 @@
 	Layout = null;
 }
 @{
+    //Variable section
     var postClient_name = "";
     var postClient_passport = "";
     var postItinerary_full = "";
@@ -19,6 +20,9 @@
     var postClient_beneficiary = "";
     var postClient_beneficiary_phone = "";
     int years = 0;
+    //End variable section
+
+    //Get data from last page submit form with travelInsView request
     if (IsPost)
     {
         if (Request.Form["travelInsView"] == "travelInsView")
@@ -46,6 +50,7 @@
             }
         }
     }
+    //End get data from last page submit form with travelInsView request
 }
 
 <!DOCTYPE html>
@@ -54,9 +59,15 @@
     <title>
         Travel Insurance Certificate
     </title>
+
+    @*Overide boostrap from master page*@
     <link href="~/Css/Certificate/TravelInsuranceCertificate.css" rel="stylesheet" />
+
     <script src="~/Js/Certificate/jquery-1.8.3.min.js"></script>
+
+    
     <script type="text/javascript">
+        @*Define print page size*@
         $(document).ready(function () {
             $('#btnPrint').click(function () {
                 window.print();
@@ -64,6 +75,7 @@
             });
         });
 
+        @*Generate to PDF*@
         function genPDF() {
             mycanvas = $('#dlArea12');
             html2canvas(mycanvas[0]).then(function (canvas) {
@@ -72,12 +84,9 @@
                 doc.save('TravelInsurance.pdf');
             });
         }
-
     </script>
 </head>
-
 <body>
-
     <div id="dlArea12" class="page">
         <div class="cert">
             <div style="text-align:center; font-weight:bold;font-size:140%; margin-top:15px;">
@@ -104,7 +113,6 @@
                     <div style="width:30%; float:left; border:solid 1px gray; padding:4px;"><span id="spnPassport" style="font-weight:bold;">@postClient_passport</span></div>
                 </div>
 
-
                 <div class="br">&nbsp;</div>
                 <div>
                     <div style="width:80%; float:left;"><span class="en">Date of Birth</span></div>
@@ -120,8 +128,6 @@
                               style="font-weight:bold;">@years</span>
                     </div>
                 </div>
-
-
                 <div class="br">&nbsp;</div>
                 <div><span class="en">Address of Insured</span></div>
                 <div style="border:solid 1px gray; padding:4px;">
@@ -130,37 +136,27 @@
                         CAMBODIA
                     </span>
                 </div>
-
                 <div class="br">&nbsp;</div>
                 <div>
                     <span id="accompanyingchild" class="en"></span>
                 </div>
                 <div>
                     <span id="spnChildren">
-
                     </span>
                 </div>
-
             </div>
             <div class="div_col_2">
                 <div class="en" style="margin-top:-27px; float:right;">
                     <div>
                         <font style="font-weight:normal;">CERTIFICATE NO.:</font> <span id="lblCertificateNo" class="bold en">@postCert_number</span>
                     </div>
-
-
                 </div>
-
-
-
                 <div>
                     <span class="en">Itinerary</span>
                 </div>
                 <div style="border:solid 1px gray; padding:4px; font-weight:bold;">
                     <span id="spnItinerary">@postItinerary_full</span>
                 </div>
-
-
                 <br />
                 <div>
                     <div style="width:40%; float:left;"><span class="en">Comencing Date</span></div>
@@ -203,7 +199,6 @@
                 <div style="float:right;margin-right:-170px; width:100px; margin-top:-20px;" class="en">
                     <img width="100%" src="~/Image/Certificate/stamp.jpg" />
                 </div>
-
             </div>
             <div class="clear"></div>
             <div class="bar">
@@ -369,8 +364,8 @@
             </p>
             </div>
         </div>
-    <script src="~/Js/Certificate/html2canvas.js"></script>
+    <script src="~/Js/Certificate/html2canvas.js"></script>@*Library for converting html to Canvas formate*@ 
     <script src="~/Js/Certificate/jquery-2.1.3.js"></script>
-    <script src="~/Js/Certificate/jspdf.min.js"></script>
+    <script src="~/Js/Certificate/jspdf.min.js"></script>@*Library for converting html and Canvas to PDF formate*@ 
 </body>
 </html>

@@ -6,6 +6,7 @@
 }
 
 @{
+    //Database defining and Sql Query
     int currentPage = 0;
     var myDb = new PetaPoco.Database("FIHRDBPath");
     string queryDb = "SELECT int_LID as newsId, nvc_Title as newsTitle, nvc_Spoke as newsSpoke, nvc_News as newsDescription FROM tbl_News ORDER BY int_LID DESC";
@@ -28,6 +29,8 @@
     }
     PetaPoco.Page<fi_news_events> listNews;
     listNews = myDb.Page<fi_news_events>(currentPage, 45, queryDb);
+    //End Database defining and Sql Query
+
     int renameId = 0;
     int i = 0;
 }

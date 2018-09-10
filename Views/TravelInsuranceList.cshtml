@@ -5,39 +5,50 @@
     Layout = "TravelInsurance.cshtml";
 }
 @{
+    //Set defualt value period of time for searching query and excel naming
     var setDefualtTimeCurFrom = String.Format("{0:u}", DateTime.Now.AddDays(-(DateTime.Now.Day) + 1)).Substring(0, DateTime.Now.ToString().IndexOf(" ") + 2);
     var setDefualtTimeCurTo = String.Format("{0:u}", DateTime.Now).Substring(0, DateTime.Now.ToString().IndexOf(" ") + 2);
 }
 @{
-    var DatabaseName = "DBTravelUATConnectionString";
-    var myDbTravelIns = new PetaPoco.Database(DatabaseName);
-    var SqlQuerySelTravelIns = "SELECT * FROM VW_CH_TRAVELLIST_SELECT_ALL ORDER BY travel_id DESC";
-    var SqlQuerySelTravelIns1 = "SELECT * FROM VW_CH_TRAVELLIST_SELECT_ALL";
-    var createdBy = Request.Form["travelSearchCreatedBy"];
-    var paymentStatus = Request.Form["travelSearchPaymentStatus"];
-    var startDate = Request.Form["travelSearchStartDate"];
-    var endDate = Request.Form["travelSearchEndDate"];
-    var keywordSearch = Request.Form["travelSearchKeyword"];
-    var excelNaming = DateTime.Now.ToString("dd MMM yyyy") + " List All Travel insurance";   
-    if (IsPost)
-    {
-        if(Request.Form["submitTravelSearch"] == "submitTravelSearch")
+    //Database query and sql connection
+        var DatabaseName = "DBTravelUATConnectionString";
+        var myDbTravelIns = new PetaPoco.Database(DatabaseName);
+        //Sql Query for viewing on web browser 
+        var SqlQuerySelTravelIns = "SELECT * FROM VW_CH_TRAVELLIST_SELECT_ALL ORDER BY travel_id DESC";
+        //Sql Query for Excel exporting
+        var SqlQuerySelTravelIns1 = "SELECT * FROM VW_CH_TRAVELLIST_SELECT_ALL";
+
+        //Parameter for searching filter
+            var createdBy = Request.Form["travelSearchCreatedBy"];
+            var paymentStatus = Request.Form["travelSearchPaymentStatus"];
+            var startDate = Request.Form["travelSearchStartDate"];
+            var endDate = Request.Form["travelSearchEndDate"];
+            var keywordSearch = Request.Form["travelSearchKeyword"];
+        //End Parameter for searching filter
+
+        //Generate name for excel files
+            var excelNaming = DateTime.Now.ToString("dd MMM yyyy") + " List All Travel insurance";
+        //End generate name for excel files
+        if (IsPost)
         {
-            SqlQuerySelTravelIns = string.Format("SELECT * FROM VW_CH_TRAVELLIST_SELECT_ALL WHERE created_by LIKE '%{0}%' AND paid_status "+
-            " LIKE '%{1}%' AND created_date >= '{2}' AND created_date <= '{3}' AND str(travel_id) + "+
-            "(CASE WHEN certificate_id IS NULL THEN '' ELSE str(certificate_id) END) +itinerary + client_name + client_phone LIKE '%{4}%'",
-                    createdBy,
-                    paymentStatus,
-                    startDate,
-                    endDate,
-                    keywordSearch
-                );
-            SqlQuerySelTravelIns1 = SqlQuerySelTravelIns;
-            excelNaming = excelNaming + " From " + startDate + " to" + endDate;
+            if(Request.Form["submitTravelSearch"] == "submitTravelSearch")
+            {
+                SqlQuerySelTravelIns = string.Format("SELECT * FROM VW_CH_TRAVELLIST_SELECT_ALL WHERE created_by LIKE '%{0}%' AND paid_status "+
+                " LIKE '%{1}%' AND created_date >= '{2}' AND created_date <= '{3}' AND str(travel_id) + "+
+                "(CASE WHEN certificate_id IS NULL THEN '' ELSE str(certificate_id) END) +itinerary + client_name + client_phone LIKE '%{4}%'",
+                        createdBy,
+                        paymentStatus,
+                        startDate,
+                        endDate,
+                        keywordSearch
+                    );
+                SqlQuerySelTravelIns1 = SqlQuerySelTravelIns;
+                excelNaming = excelNaming + " From " + startDate + " to" + endDate;
+            }
         }
-    }
-    var DataTravelIns = myDbTravelIns.Query<fi_travelIns_Select_All>(SqlQuerySelTravelIns);
-    var DataTravelInsForExp = myDbTravelIns.Query<fi_travelIns_Select_All>(SqlQuerySelTravelIns1);
+        var DataTravelIns = myDbTravelIns.Query<fi_travelIns_Select_All>(SqlQuerySelTravelIns);
+        var DataTravelInsForExp = myDbTravelIns.Query<fi_travelIns_Select_All>(SqlQuerySelTravelIns1);
+    //End database query and sql connection
  }
 
 <style type="text/css">
