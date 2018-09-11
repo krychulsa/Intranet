@@ -1,11 +1,14 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.Calendar>
 @using ContentModels = Umbraco.Web.PublishedContentModels;
+<!--Object Model-->
 @using Intranet.ModelCollection;
 @{
+    //Master page Extended
     Layout = "Master1.cshtml";
 }
 
 
+<!--Variable and database Blocks-->
 @{
     //database name
     var dbName = "FIHRDBPath";
@@ -21,18 +24,18 @@
     var json = Html.Raw(Json.Encode(resultPlanHoliday));
 }
 
-
-
+<!--HTML Code Blocks-->
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>@CurrentPage.pageTitle</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link href="~/Css/bootstrap-year-calendar/bootstrap-year-calendar.css" rel="stylesheet" />
+    <!-- Latest compiled and minified JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <link href="~/Css/bootstrap-year-calendar/bootstrap-year-calendar.css" rel="stylesheet" />
     <script src="~/Js/bootstrap-year-calendar/bootstrap-year-calendar.js"></script>
     <script src="~/Js/bootstrap-year-calendar/index.js"></script>
 </head>
@@ -51,7 +54,6 @@
             </div>
         </div>
     </div>
-
     <script>
         function editEvent(event) {
             $('#event-modal input[name="event-index"]').val(event ? event.id : '');
@@ -181,5 +183,4 @@
         }
     </script>
 </body>
-
 </html>

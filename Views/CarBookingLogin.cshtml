@@ -1,9 +1,22 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.CarBookingLogin>
 @using ContentModels = Umbraco.Web.PublishedContentModels;
+<!--Database obj or modle obj-->
 @using Intranet.ModelCollection;
 @{
+    //Master page
     Layout = "Master2.cshtml";
 }
+
+@{ 
+    // Common problems for implementation:
+    //  +   Store session for login
+    //  +   Not allow to carbooking page if not login
+    //  +   Verify password and user input
+    //  +   Complete "Create user" Tab
+    //  +   Car booking description (Need to add in Umbraco admin)
+    //  +   Admin: admin | Password: admin123
+}
+
 
 @{ 
     //Define tatabase name
@@ -29,6 +42,7 @@
             var DobAppUser = mydb.SingleOrDefault<fi_AppUser>(SqlQuerySelDobAppUser);
             if (DobAppUser != null)
             {
+                //Verified password
                 if (DobAppUser.Password == Request.Form["CarBookingPassword"])
                 {
                     Response.Redirect("~/car-booking-welcome/");
@@ -42,6 +56,7 @@
                                 <img src="https://png.icons8.com/color/48/000000/high-importance.png" style="height:30px; padding:0px; margin:0px">
                             </div>
                             <div class="col-sm-11" style="padding-top:2px">
+                                <!--Show message of login status-->
                                 @loginMsg
                             </div>
                         </div>
@@ -51,6 +66,8 @@
         }
     }
 }
+
+<!--HTML Code Block-->
 <div class="container-fluid">
     <div class="text-center"s>
         <ul class="nav nav-tabs" role="tablist">
@@ -60,7 +77,7 @@
             <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#signIn">LOGIN</a>
             </li>
-
+            <!--Under construction! Please Implement this page-->
             <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#createAcc">CREATE ACCOUNT</a>
             </li>
@@ -153,7 +170,7 @@
                                     </div>
                                 </div>
                                 <div class="text-center">
-                                    <button class="btn btn-outline-grey" style="padding: 6px 20px 6px 20px" type="submitLogin">Login</button>
+                                    <button class="btn btn-outline-grey" style="padding: 6px 20px 6px 20px" type="submit" name="submitSignUp" value="submitSignUp">Create account</button>
                                 </div>
                             </div>
                         </div>

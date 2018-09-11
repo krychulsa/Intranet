@@ -10,9 +10,9 @@
     //Open datbase connection
     var myDb = new PetaPoco.Database(DatabaseName);
     //Query of selcet statement
-    var SqlQuerySelDobEmployees = string.Format("SELECT ID, [Colleague Name] AS Colleague_Name, PhotoPath FROM Coll_Birthday_Photo");
-    var SqlOnLeaveToday = "SELECT * FROM VW_CH_EMPLOYEES_ON_LEAVE_TODAY_REF";
-    var SqlOnLeaveTmr = "SELECT * FROM VW_CH_EMPLOYEES_ON_LEAVE_TMR";
+    var SqlQuerySelDobEmployees = string.Format("SELECT ID, [Colleague Name] AS Colleague_Name, PhotoPath FROM Coll_Birthday_Photo"); //Select employee with HBD today
+    var SqlOnLeaveToday = "SELECT * FROM VW_CH_EMPLOYEES_ON_LEAVE_TODAY_REF"; //Select employee on leave today
+    var SqlOnLeaveTmr = "SELECT * FROM VW_CH_EMPLOYEES_ON_LEAVE_TMR"; //Select employee on leave tommorrow
     //Execute query
     var DOBEmployees = myDb.Query<fi_birthday>(SqlQuerySelDobEmployees);
     var OnLeaveEmployeeToday = myDb.Query<fi_onleaveToday>(SqlOnLeaveToday);
@@ -23,6 +23,7 @@
 <hr />
 <div class="row">
     <div class="col-sm-3">
+        <!--Table for Employee celebration Birthday-->
         <table class="table table-sm">
             <div class="container text-center">   
                 <img src="https://png.icons8.com/office/30/000000/birthday.png">
@@ -75,6 +76,7 @@
     <div class="col-sm-9">
         <div class="row">
             <div class="col-sm-7">
+                <!--Table for Employee on leave today-->
                 <table class="table table-sm">
                     <div class="container text-center">
                         <img src="https://png.icons8.com/color/30/000000/leave.png">
@@ -94,7 +96,8 @@
                             {
                                 //Select employee on leave referrence
                                 var a = new PetaPoco.Database("FIHRDBPath").SingleOrDefault<fi_onleave_ref>(String.Format("SELECT * FROM EMPLEAVEPLANBackup WHERE lpcode = {0} AND backup_date = CONVERT(DATETIME,CONVERT(VARCHAR(12),GETDATE(),112))", @item.LPCODE));
-                            <tr>
+                            
+                                <tr>
                                 <td>@item.EmployeeName</td>
                                 <td>@item.Department</td>
                                 @if(a != null)
@@ -119,6 +122,7 @@
                 </table>
             </div>
             <div class="col-sm-5">
+                <!--Table for Employee on leave tommorrow-->
                 <table class="table table-sm">
                     <div class="container text-center">
                         <img src="https://png.icons8.com/dusk/30/000000/leave.png">

@@ -1,9 +1,10 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.CarBookingEntry>
 @using ContentModels = Umbraco.Web.PublishedContentModels;
+<!--Database obj or model obj-->
 @using Intranet.ModelCollection;
 @{
+    //Master page
     Layout = "CarBooking.cshtml";
-
 }
 
 @{ 
@@ -44,6 +45,7 @@
     }
 }
 
+<!--HTML Code Block-->
 <form action="#" method="post">
     <div class="container card shadow">
         <div class="card-body">
@@ -54,19 +56,21 @@
                 
                 <hr />
             </div>
+            <!--Booker name-->
             <div class="form-group row" style="padding-top:10px">
                 <label for="Booker" class="col-sm-3 col-form-label">Booker</label>
                 <div class="col-sm-9">
                     <input type="text" class="form-control" name="CarBookingBooker" placeholder="Enter booker name">
                 </div>
             </div>
+            <!--Car model-->
             <div class="form-group row">
                 <label for="Model" class="col-sm-3 col-form-label">Car model</label>
                 <div class="col-sm-9">
                     <input type="text" class="form-control" name="CarBookingcarmodel" placeholder="Enter car model">
                 </div>
             </div>
-
+            <!--Select departments-->
             <div class="form-group row">
                 <label for="Model" class="col-sm-3 col-form-label">Departments</label>
                 <div class="col-sm-9">
@@ -79,12 +83,14 @@
                     </select>
                 </div>
             </div>
+            <!--Appointment date-->
             <div class="form-group row">
                 <label for="ApointmentDate" class="col-sm-3 col-form-label">Apointment Date</label>
                 <div class="col-sm-9">
                     <input type="date" class="form-control" name="CarBookingAppointment" placeholder="Select apointment date">
                 </div>
             </div>
+            <!--Avaliable time for booking-->
             <div class="form-group row">
                 <label for="Time" class="col-sm-3 col-form-label">Time</label>
                 <div class="col-sm-9">
@@ -95,38 +101,42 @@
                     </select>
                 </div>
             </div>
+            <!--Booking date-->
             <div class="form-group row">
                 <label for="BookingDate" class="col-sm-3 col-form-label">Booking Date</label>
                 <div class="col-sm-9">
                     <input type="date" class="form-control" name="CarBookingBookingDate" placeholder="Select booking date">
                 </div>
             </div>
-
+            <!--Estimate depart time-->
             <div class="form-group row">
                 <label for="EstimateDepartTime" class="col-sm-3 col-form-label">Estiamte depart time</label>
                 <div class="col-sm-9">
                     <input type="time" class="form-control" name="CarBookingEstimateDepartTime" placeholder="Select estimate depart time">
                 </div>
             </div>
-
+            <!--Estimate arrival time-->
             <div class="form-group row">
                 <label for="EstimateArrivalTime" class="col-sm-3 col-form-label">Estiamte arrival time</label>
                 <div class="col-sm-9">
                     <input type="time" class="form-control" name="CarBookingEstimateArrivalTime" placeholder="Select estimate arrival time">
                 </div>
             </div>
+            <!--Destination-->
             <div class="form-group row">
                 <label for="Destination" class="col-sm-3 col-form-label">Destination</label>
                 <div class="col-sm-9">
                     <input type="text" class="form-control" name="CarBookingDestination" placeholder="Destination">
                 </div>
             </div>
+            <!--Reason-->
             <div class="form-group row">
                 <label for="Reason" class="col-sm-3 col-form-label">Reason</label>
                 <div class="col-sm-9">
                     <textarea type="text" class="form-control" name="CarBookingReason" placeholder="Type some reason..."></textarea>
                 </div>
             </div>
+            <!--Submit-->
             <div class="text-center">
                 <button class="btn btn-outline-danger" style="padding: 6px 20px 6px 20px" type="submit" name="submitBooking" value="submitBooking">Book Now</button>
             </div>
