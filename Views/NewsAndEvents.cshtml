@@ -1,34 +1,36 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.NewsAndEvents>
 @using ContentModels = Umbraco.Web.PublishedContentModels;
+<!--Database obj for database data-->
 @using Intranet.ModelCollection;
 @{
+    //Master page
 	Layout = "Master1.cshtml";
 }
 
 @{
     //Database defining and Sql Query
-    int currentPage = 0;
-    var myDb = new PetaPoco.Database("FIHRDBPath");
-    string queryDb = "SELECT int_LID as newsId, nvc_Title as newsTitle, nvc_Spoke as newsSpoke, nvc_News as newsDescription FROM tbl_News ORDER BY int_LID DESC";
-    if (IsPost)
-    {
-        if (Request.Form["submitSearch"] == "submitSearch")
-        {
-            currentPage += 1;
-            queryDb = String.Format("SELECT int_LID as newsId, nvc_Title as newsTitle, nvc_Spoke as newsSpoke, nvc_News as newsDescription FROM tbl_News WHERE nvc_Title LIKE '%{0}%'", Request.Form["searchEmployee"]);
-            //queryDb = String.Format("SELECT int_LID as newsId, nvc_Title as newsTitle, nvc_Spoke as newsSpoke, nvc_News as newsDescription FROM tbl_News WHERE nvc_Title LIKE '%{0}%' OR nvc_News LIKE '%{0}%'", Request.Form["searchEmployee"]);
-        }
-        else
-        {
-            currentPage = Convert.ToInt32(Request.Form["btnPage"]);
-        }
-    }
-    else
-    {
-        currentPage += 1;
-    }
-    PetaPoco.Page<fi_news_events> listNews;
-    listNews = myDb.Page<fi_news_events>(currentPage, 45, queryDb);
+            int currentPage = 0;
+            var myDb = new PetaPoco.Database("FIHRDBPath");
+            string queryDb = "SELECT int_LID as newsId, nvc_Title as newsTitle, nvc_Spoke as newsSpoke, nvc_News as newsDescription FROM tbl_News ORDER BY int_LID DESC";
+            if (IsPost)
+            {
+                if (Request.Form["submitSearch"] == "submitSearch")
+                {
+                    currentPage += 1;
+                    queryDb = String.Format("SELECT int_LID as newsId, nvc_Title as newsTitle, nvc_Spoke as newsSpoke, nvc_News as newsDescription FROM tbl_News WHERE nvc_Title LIKE '%{0}%'", Request.Form["searchEmployee"]);
+                    //queryDb = String.Format("SELECT int_LID as newsId, nvc_Title as newsTitle, nvc_Spoke as newsSpoke, nvc_News as newsDescription FROM tbl_News WHERE nvc_Title LIKE '%{0}%' OR nvc_News LIKE '%{0}%'", Request.Form["searchEmployee"]);
+                }
+                else
+                {
+                    currentPage = Convert.ToInt32(Request.Form["btnPage"]);
+                }
+            }
+            else
+            {
+                currentPage += 1;
+            }
+            PetaPoco.Page<fi_news_events> listNews;
+            listNews = myDb.Page<fi_news_events>(currentPage, 45, queryDb);
     //End Database defining and Sql Query
 
     int renameId = 0;
@@ -70,23 +72,6 @@
                         <p>@newsItem.newsDescription</p>
                     </div>
                 </div>
-
-                @*@if(renameId ==1){
-                        <div id="@String.Format("collapseNews{0}", @renameId)" class="collapse show" aria-labelledby="@String.Format("newHeading{0}", @renameId)" data-parent="#accordionExample">
-                            <div class="card-body">
-                                @newsItem.newsDescription
-                            </div>
-                        </div>
-                    }
-                    else
-                    {
-                        <div id="@String.Format("collapseNews{0}", @renameId)" class="collapse" aria-labelledby="@String.Format("newHeading{0}", @renameId)" data-parent="#accordionExample">
-                            <div class="card-body">
-                                @newsItem.newsDescription
-                            </div>
-                        </div>
-                    }*@
-
             </div>
         }
     </div>

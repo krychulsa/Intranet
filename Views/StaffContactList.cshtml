@@ -1,44 +1,46 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.StaffContactList>
 @using ContentModels = Umbraco.Web.PublishedContentModels;
+<!--database obj for database data-->
 @using Intranet.ModelCollection;
 @{
+    //Master page
     Layout = "Master.cshtml";
 }
 @{
     //Open database connection and DB Query
-    int currentPage = 0;
-    var myDb = new PetaPoco.Database("FIHRDBPath");
-    string queryDb = "SELECT * FROM Employees ORDER BY ID DESC";
-    if (IsPost)
-    {
-        if (Request.Form["submitSearch"] == "submitSearch")
-        {
-            var fname = Request.Form["searchEmployee"];
-            var deptId = Request.Form["deptSel"];
-            if (deptId== "default")
+            int currentPage = 0;
+            var myDb = new PetaPoco.Database("FIHRDBPath");
+            string queryDb = "SELECT * FROM Employees ORDER BY ID DESC";
+            if (IsPost)
             {
-                queryDb = string.Format("SELECT * FROM Employees WHERE (FirstName + ' ' + LastName) LIKE '%{0}%' OR (LastName + ' ' + FirstName) LIKE '%{0}%'", fname);
+                if (Request.Form["submitSearch"] == "submitSearch")
+                {
+                    var fname = Request.Form["searchEmployee"];
+                    var deptId = Request.Form["deptSel"];
+                    if (deptId== "default")
+                    {
+                        queryDb = string.Format("SELECT * FROM Employees WHERE (FirstName + ' ' + LastName) LIKE '%{0}%' OR (LastName + ' ' + FirstName) LIKE '%{0}%'", fname);
+                    }
+                    else
+                    {
+                        queryDb = string.Format("SELECT * FROM Employees WHERE (FirstName + ' ' + LastName) LIKE '%{0}%' AND  DeptId LIKE '%{1}%'", fname, deptId);
+                    }
+                    currentPage += 1;
+                }
+                else
+                {
+                    currentPage = Convert.ToInt32(Request.Form["btnPage"]);
+                }
             }
             else
             {
-                queryDb = string.Format("SELECT * FROM Employees WHERE (FirstName + ' ' + LastName) LIKE '%{0}%' AND  DeptId LIKE '%{1}%'", fname, deptId);
+                currentPage += 1;
             }
-            currentPage += 1;
-        }
-        else
-        {
-            currentPage = Convert.ToInt32(Request.Form["btnPage"]);
-        }
-    }
-    else
-    {
-        currentPage += 1;
-    }
-    PetaPoco.Page<fi_employee> listEmployees;
-    listEmployees = myDb.Page<fi_employee>(currentPage, 20, queryDb);
-    var listDepartment = myDb.Query<fi_department>("SELECT * FROM Departments");
-    int i = 0;
-    //Open database connection and DB Query
+            PetaPoco.Page<fi_employee> listEmployees;
+            listEmployees = myDb.Page<fi_employee>(currentPage, 20, queryDb);
+            var listDepartment = myDb.Query<fi_department>("SELECT * FROM Departments");
+            int i = 0;
+    //End Open database connection and DB Query
     }
 
     <hr />
@@ -95,6 +97,7 @@
                         <div class="btn-group" role="group">
                             @*View Popup Model*@
                             <form action="~/staff-detail-info/" method="post">
+                                <!--Transfer data vai POST Request-->
                                 <input type="type" hidden name="postId" value="@row.ID" />
                                 <input type="type" hidden name="postfName" value="@row.FirstName" />
                                 <input type="type" hidden name="postlName" value="@row.LastName" />
@@ -109,6 +112,7 @@
                             </form>
                             @*Update Popup model*@
                             <form action="~/update-staff-info" method="post">
+                                <!--Transfer data vai POST Request-->
                                 <input type="type" hidden name="postId" value="@row.ID" />
                                 <input type="type" hidden name="postDeptID" value="@row.DeptID" />
                                 <input type="type" hidden name="postRange" value="@row.Range" />
@@ -140,6 +144,8 @@
         </tbody>
     </table>
     <hr />
+
+<!--Auto generate view pager-->
     <div class="text-center">
         <form action="~/staff-contact-list/" method="post">
             <div class="btn-group">
@@ -177,3 +183,5 @@
             </div>
         </form>
     </div>
+
+<!--End auto generate view pager-->

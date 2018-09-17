@@ -1,20 +1,22 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.LeavePlanLogin>
 @using ContentModels = Umbraco.Web.PublishedContentModels;
+<!--Database obj for datbase data-->
 @using Intranet.ModelCollection;
 @{
+    //Master page included
 	Layout = "Master2.cshtml";
 }
 
 
 @{
     //Declaration of variable and constant
-    var myDb = new PetaPoco.Database("FIHRDBPath");
-    var SqlQuerySelAppUser = "";
-    var loginMsg = "";
-    var userLogin = Request.Form["CarBookingUsername"];
-    var welcomeMsg = "";
-    welcomeMsg = String.Format("{0}", CurrentPage.pageTitle);
-    welcomeMsg = welcomeMsg.ToUpper().Substring(0, welcomeMsg.LastIndexOf(" "));
+        var myDb = new PetaPoco.Database("FIHRDBPath");
+        var SqlQuerySelAppUser = "";
+        var loginMsg = "";
+        var userLogin = Request.Form["CarBookingUsername"];
+        var welcomeMsg = "";
+        welcomeMsg = String.Format("{0}", CurrentPage.pageTitle);
+        welcomeMsg = welcomeMsg.ToUpper().Substring(0, welcomeMsg.LastIndexOf(" "));
     //End declaration of variable and constant
 }
 
@@ -27,7 +29,7 @@
             //Database sql query
             SqlQuerySelAppUser = string.Format("SELECT * FROM AppUser WHERE AppSite = 'Leave Plan Application' AND Username = '{0}'", Request.Form["CarBookingUsername"]);
             var DobAppUser = myDb.SingleOrDefault<fi_AppUser>(SqlQuerySelAppUser);
-            if (DobAppUser != null)
+            if (DobAppUser != null) //If password incorrect
             {
                 //Verify password
                 if (DobAppUser.Password == Request.Form["CarBookingPassword"])
@@ -49,7 +51,7 @@
                     </div>
                 }
             }
-            else
+            else //If password Incorrect
             {
                 loginMsg = "Incorrect Username!";
                 <div class="alert alert-danger" role="alert">

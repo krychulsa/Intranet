@@ -6,6 +6,14 @@
 }
 
 @{
+//////////////////////////////////////////////////////////////
+//                                                          //
+//             This page include TOPMENU                    //
+//                                                          //
+//////////////////////////////////////////////////////////////
+}
+
+@{
     var myDb = new PetaPoco.Database("FIHRDBPath");
     var result = myDb.Query<ForteHolidays>("SELECT HolidayDescription as title, HolidyDate as start FROM tbllHoliday");
     var json = Html.Raw(Json.Encode(result));

@@ -1,17 +1,21 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.LeavePlanPublicHolidayList>
 @using ContentModels = Umbraco.Web.PublishedContentModels;
+<!--Database obj for database data-->
 @using Intranet.ModelCollection;
 @{
+    //Master pag included
 	Layout = "LeavePlanApplication.cshtml";
 }
 
 
 @{
-    //Open database connection and queryData from database
-    var myDb = new PetaPoco.Database("FIHRDBPath");
-    var result = myDb.Query<fi_LeavePlanHoliday>("SELECT id as id, HolidayDescription as name, HolidyDate as startDate, HolidyDate as endDate FROM tbllHoliday");
-    var json = Html.Raw(Json.Encode(result));
-    var resultHolidayRemainThisYear = myDb.Query<ForteHolidays>("SELECT * from VW_CH_HOLIDAY_REMAIN_THIS_YEAR");
+    //Sql query
+        //Open database connection and queryData from database
+        var myDb = new PetaPoco.Database("FIHRDBPath");
+        var result = myDb.Query<fi_LeavePlanHoliday>("SELECT id as id, HolidayDescription as name, HolidyDate as startDate, HolidyDate as endDate FROM tbllHoliday");
+        var json = Html.Raw(Json.Encode(result));
+        var resultHolidayRemainThisYear = myDb.Query<ForteHolidays>("SELECT * from VW_CH_HOLIDAY_REMAIN_THIS_YEAR");
+    //End sql query
 }
 <!DOCTYPE html>
 <html lang="en" dir="ltr">

@@ -1,31 +1,32 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage<ContentModels.LeavePlanListing>
 @using ContentModels = Umbraco.Web.PublishedContentModels;
+<!--Model obj for database obj-->
 @using Intranet.ModelCollection;
 @{
+    //Master page included
     Layout = "LeavePlanApplication.cshtml";
 }
         
 @{
     //Sql block statement
-
-    //Open database connection with connection string
-    var myDb = new PetaPoco.Database("FIHRDBPath");// Connenction string = FIHRDBPath
-    //Sql Query statement 
-    var dbQuery = "SELECT id as id, HolidayDescription as name, HolidyDate as startDate, HolidyDate as endDate FROM tbllHoliday";
-    var dbQuery1 = String.Format("SELECT * from VW_CH_EMPLOYEES_ON_LEAVE_CURRENT_YEAR WHERE [Employee ID] < {0}", 0);
-    var displayFirst = true;
-    if (IsPost)
-    {
-        if(Request.Form["submitSearch"]== "submitSearch")
+        //Open database connection with connection string
+        var myDb = new PetaPoco.Database("FIHRDBPath");// Connenction string = FIHRDBPath
+        //Sql Query statement 
+        var dbQuery = "SELECT id as id, HolidayDescription as name, HolidyDate as startDate, HolidyDate as endDate FROM tbllHoliday";
+        var dbQuery1 = String.Format("SELECT * from VW_CH_EMPLOYEES_ON_LEAVE_CURRENT_YEAR WHERE [Employee ID] < {0}", 0);
+        var displayFirst = true;
+        if (IsPost)
         {
-            dbQuery = String.Format("SELECT [Employee ID] as id, [Employee Name] as name, PLANDATE as startDate, PLANDATE as endDate FROM VW_LEAVE_BY_DAY WHERE [Employee ID] = {0}", Request.Form["EmpSel"]);
-            dbQuery1 = String.Format("SELECT [Employee ID] as id, PLANDATE, [Employee Name] as name, Department, [Leave Date] as startDate, [Leave Date] as endDate from VW_CH_EMPLOYEES_ON_LEAVE_CURRENT_YEAR WHERE [Employee ID]={0} ORDER BY PLANDATE DESC", Request.Form["EmpSel"]);
+            if(Request.Form["submitSearch"]== "submitSearch")
+            {
+                dbQuery = String.Format("SELECT [Employee ID] as id, [Employee Name] as name, PLANDATE as startDate, PLANDATE as endDate FROM VW_LEAVE_BY_DAY WHERE [Employee ID] = {0}", Request.Form["EmpSel"]);
+                dbQuery1 = String.Format("SELECT [Employee ID] as id, PLANDATE, [Employee Name] as name, Department, [Leave Date] as startDate, [Leave Date] as endDate from VW_CH_EMPLOYEES_ON_LEAVE_CURRENT_YEAR WHERE [Employee ID]={0} ORDER BY PLANDATE DESC", Request.Form["EmpSel"]);
+            }
         }
-    }
-    var result = myDb.Query<fi_LeavePlanOnLeave>(dbQuery);
-    var selectAllEmp = myDb.Query<fi_employee>("SELECT * FROM view_employees WHERE DeptID NOT LIKE 'DIR%'  ORDER BY fullname ASC");
-    var resultOnLeaveRemainThisYear = myDb.Query<fi_LeavePlanOnLeave>(dbQuery1);
-    var json = Html.Raw(Json.Encode(result));
+        var result = myDb.Query<fi_LeavePlanOnLeave>(dbQuery);
+        var selectAllEmp = myDb.Query<fi_employee>("SELECT * FROM view_employees WHERE DeptID NOT LIKE 'DIR%'  ORDER BY fullname ASC");
+        var resultOnLeaveRemainThisYear = myDb.Query<fi_LeavePlanOnLeave>(dbQuery1);
+        var json = Html.Raw(Json.Encode(result));
     //END Sql block statement
 }
 
@@ -198,7 +199,7 @@
                 dayContextMenu: function (e) {
                     $(e.element).popover('hide');
                 },
-                dataSource: myData(@json),
+                dataSource: myData(@json), //List all event in Calendar
             });
             $('#save-event').click(function () {
                 saveEvent();
